@@ -1,14 +1,14 @@
 import junit.framework.Assert;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.OutputStream;
 import java.net.Socket;
 
 public class ServerTest {
+
     private MockServerSocket mockServerSocket;
     private Server server;
+
     @Before
     public void setUp() throws Exception {
         mockServerSocket = new MockServerSocket();
