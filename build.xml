@@ -12,7 +12,7 @@
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/Tiana.jar" basedir="build/classes">
             <manifest>
-                <attribute name="Main-Class" value="Server"/>
+                <attribute name="Main-Class" value="Main"/>
             </manifest>
         </jar>
     </target>
