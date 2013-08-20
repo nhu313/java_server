@@ -1,7 +1,5 @@
 package server;
 
-import server.request.processor.Index;
-import server.request.processor.Processor;
 import server.request.processor.Processors;
 
 import java.io.IOException;
@@ -9,12 +7,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
+    private final ResponseWriter writer;
     private ServerSocket serverSocket;
-    private ServerIO serverIO;
 
-    public Server(ServerSocket serverSocket, ServerIO serverIO) {
+    public Server(ServerSocket serverSocket, ResponseWriter writer) {
         this.serverSocket = serverSocket;
-        this.serverIO = serverIO;
+        this.writer = writer;
     }
 
     public void start() {
@@ -24,8 +22,7 @@ public class Server {
             while(!serverSocket.isClosed()){
                 Socket clientSocket = serverSocket.accept();
                 Request request = new RequestParser().parse(clientSocket.getInputStream());
-                Response response = Processors.getProcessor(request).process(request);
-                ResponseWriter writer = new ResponseWriter();
+                Response response = Processors.get(request).process(request);
                 writer.write(clientSocket.getOutputStream(), response);
                 clientSocket.close();
             }

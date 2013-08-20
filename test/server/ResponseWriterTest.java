@@ -30,7 +30,26 @@ public class ResponseWriterTest {
         response.setBody(body);
         MockOutputStream output = new MockOutputStream();
         writer.write(output, response);
-        Assert.assertEquals("HTTP/1.1 200 OK\r\n" + body + "\r\n", output.getValue());
+        String expectedString = "HTTP/1.1 200 OK\n" +
+                "Content-Type: text/xml; charset=utf-8\n" +
+                "Content-Length:" + body.length() + "\n" +
+                "\r\n" + body;
+        Assert.assertEquals(expectedString, output.getValue());
+    }
+
+    @Test
+    public void testWrite_ResponseWithHeader() throws IOException {
+        String host = "http://localhost/";
+        Response response = new Response(301);
+        response.addHeader("Location", host);
+
+        MockOutputStream output = new MockOutputStream();
+        writer.write(output, response);
+
+        String expected = "HTTP/1.1 301 Moved Permanently\n" +
+                            "Location:" + host;
+
+        Assert.assertEquals(expected, output.getValue());
     }
 
 }

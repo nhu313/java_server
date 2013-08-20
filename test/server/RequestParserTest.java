@@ -48,6 +48,26 @@ public class RequestParserTest {
         testRequest("POST", "/file", textBody);
     }
 
+    @Test
+    public void testParseRequest_parseHost() throws IOException {
+        String host = "www.example.com";
+        String requestString = "GET / HTTP/1.1\nHost: " + host;
+        InputStream input = new ByteArrayInputStream(requestString.getBytes());
+        Request request = new Request("GET", "/");
+        request.setHost(host);
+        Assert.assertEquals(request, handler.parse(input));
+    }
+
+    @Test
+    public void testParseRequest_parseHostWithPort() throws IOException {
+        String host = "localhost:5000";
+        String requestString = "GET / HTTP/1.1\nHost: " + host;
+        InputStream input = new ByteArrayInputStream(requestString.getBytes());
+        Request request = new Request("GET", "/");
+        request.setHost(host);
+        Assert.assertEquals(request, handler.parse(input));
+    }
+
     private void testRequest(String method, String route) {
         testRequest(method, route, null);
     }

@@ -27,9 +27,11 @@ public class RequestParser {
         String[] values = reader.readLine().split(" ");
         request.setMethod(values[0]);
         request.setPath(values[1]);
+
         Map<String, String> header = getHeader(reader);
         request.setContentLength(getContentLength(header));
         request.setAlive(getActiveValue(header));
+        request.setHost(header.get("Host"));
     }
 
     private boolean getActiveValue(Map<String, String> header) {
@@ -49,15 +51,13 @@ public class RequestParser {
     }
 
     private Map<String, String> getHeader(BufferedReader reader) throws IOException {
-        String line = reader.readLine();
         Map<String, String> header = new HashMap<String, String>();
-        while (isEndOfSection(line)){
-            String[] values = line.split(":");
-            if (values.length == 2){
-                header.put(values[0].trim(), values[1].trim());
-            }
-            line = reader.readLine();
 
+        String line = reader.readLine();
+        while (isEndOfSection(line)){
+            int index = line.indexOf(':');
+            header.put(line.substring(0, index), line.substring(index + 1).trim());
+            line = reader.readLine();
         }
         return header;
     }
