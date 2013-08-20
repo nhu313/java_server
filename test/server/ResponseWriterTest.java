@@ -1,6 +1,6 @@
 package server;
 
-import mocks.MockSocket;
+import mocks.MockOutputStream;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,9 +18,19 @@ public class ResponseWriterTest {
     @Test
     public void testWrite_Simple200Response() throws IOException {
         Response response = new Response(200);
-        MockSocket socket = new MockSocket();
-        writer.write(socket, response);
-        Assert.assertEquals("HTTP/1.1 200 OK", socket.getResponse());
+        MockOutputStream output = new MockOutputStream();
+        writer.write(output, response);
+        Assert.assertEquals("HTTP/1.1 200 OK", output.getValue());
+    }
+
+    @Test
+    public void testWrite_ResponseWithBody() throws IOException {
+        String body = "Why can't you trust atom? They make up everything.";
+        Response response = new Response(200);
+        response.setBody(body);
+        MockOutputStream output = new MockOutputStream();
+        writer.write(output, response);
+        Assert.assertEquals("HTTP/1.1 200 OK\r\n" + body + "\r\n", output.getValue());
     }
 
 }

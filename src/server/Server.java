@@ -2,6 +2,7 @@ package server;
 
 import server.request.processor.Index;
 import server.request.processor.Processor;
+import server.request.processor.Processors;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -23,10 +24,9 @@ public class Server {
             while(!serverSocket.isClosed()){
                 Socket clientSocket = serverSocket.accept();
                 Request request = new RequestParser().parse(clientSocket.getInputStream());
-                Processor processor = new Index();
-                Response response = processor.process(request);
+                Response response = Processors.getProcessor(request).process(request);
                 ResponseWriter writer = new ResponseWriter();
-                writer.write(clientSocket, response);
+                writer.write(clientSocket.getOutputStream(), response);
                 clientSocket.close();
             }
             serverSocket.close();

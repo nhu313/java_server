@@ -66,13 +66,7 @@ public class RequestParser {
         StringBuffer header = new StringBuffer();
         for (int i = request.getContentLength(); i > 0; i--){
         int value = reader.read();
-            if ('=' == value){
-                header.append(' ');
-                header.append((char) value);
-                header.append(' ');
-            } else {
-                header.append((char) value);
-            }
+            header.append((char) value);
         }
         return header.toString();
     }
