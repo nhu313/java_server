@@ -18,7 +18,7 @@ public class ResponseWriter {
     }
 
     private String getResponseMessage(Response response) {
-        return HTTP_VERSION + " " + response.getCode() + " OK\n";
+        return HTTP_VERSION + " " + response.getCode() + " OK\r\n";
     }
 
 }

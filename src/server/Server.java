@@ -1,5 +1,8 @@
 package server;
 
+import server.request.processor.Index;
+import server.request.processor.Processor;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,18 +20,14 @@ public class Server {
         System.out.println("Tiana's Palace is now open ^.^ !");
 
         try {
-            String responseHeader = "HTTP/1.1 200 OK\n";
             while(!serverSocket.isClosed()){
                 Socket clientSocket = serverSocket.accept();
-                String response = responseHeader;
                 Request request = new RequestParser().parse(clientSocket.getInputStream());
-                if (request.getBody() != null){
-                    response += "Content-Type: text/xml; charset=utf-8\n";
-                    response += "Content-Length: " + request.getBody().length();
-                    response += "\n\r\n" + request.getBody();
-                }
-                System.out.println("response" + response);
-                serverIO.writeResponse(clientSocket, response);
+                Processor processor = new Index();
+                Response response = processor.process(request);
+                ResponseWriter writer = new ResponseWriter();
+                writer.write(clientSocket, response);
+                clientSocket.close();
             }
             serverSocket.close();
         } catch (IOException e) {
