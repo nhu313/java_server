@@ -1,7 +1,6 @@
 package server;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -18,22 +17,19 @@ public class Server {
         System.out.println("Tiana's Palace is now open ^.^ !");
 
         try {
-            String responseHeader = "HTTP/1.1 200 OK";
-            Socket clientSocket = serverSocket.accept();
-            clientSocket.getInputStream().close();
-//            String request = serverIO.readRequest(clientSocket);
-            String response = responseHeader;
-
-//            if (request != null){
-//                System.out.print(request);
-            HttpRequest httpRequest = new RequestParser().parse(clientSocket.getInputStream());
-            if (httpRequest.getMethod().equals("POST")){
-                response += httpRequest.getBody();
+            String responseHeader = "HTTP/1.1 200 OK\n";
+            while(!serverSocket.isClosed()){
+                Socket clientSocket = serverSocket.accept();
+                String response = responseHeader;
+                Request request = new RequestParser().parse(clientSocket.getInputStream());
+                if (request.getBody() != null){
+                    response += "Content-Type: text/xml; charset=utf-8\n";
+                    response += "Content-Length: " + request.getBody().length();
+                    response += "\n\r\n" + request.getBody();
+                }
+                System.out.println("response" + response);
+                serverIO.writeResponse(clientSocket, response);
             }
-//            }
-            System.out.println("response" + response);
-            serverIO.writeResponse(clientSocket, response);
-            clientSocket.close();
             serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -29,8 +29,6 @@ public class ServerTest {
         Assert.assertEquals("HTTP/1.1 200 OK", mockServerIO.getResponseMessage());
     }
 
-
-
     @Test
     public void testStart_ReturnContentOnPOSTToRoute() {
         String request =
