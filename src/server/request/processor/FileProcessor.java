@@ -3,18 +3,17 @@ package server.request.processor;
 import server.Request;
 import server.Response;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class Image implements Processor{
+public class FileProcessor implements Processor{
 
 
     @Override
     public Response process(Request request) {
         try {
-            File file = new File("./resource/image.gif");
+            java.io.File file = new java.io.File("./public/file1");
             FileInputStream in = new FileInputStream(file);
             System.out.println("file length" + file.length());
             System.out.println(file.getPath());

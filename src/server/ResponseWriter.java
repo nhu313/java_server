@@ -1,5 +1,6 @@
 package server;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -17,9 +18,14 @@ public class ResponseWriter {
     }
 
     public void write(OutputStream output, Response response) throws IOException {
-        String message = buildResponseMessage(response);
-        PrintWriter outputWriter = new PrintWriter(output, true);
-        outputWriter.println(message);
+        output.write(buildHeader(response).getBytes());
+        if (response.getBody() != null){
+            output.write(response.getBody());
+        }
+//        String message = buildResponseMessage(response);
+//        PrintWriter outputWriter = new PrintWriter(output, true);
+//
+//        outputWriter.println(message);
     }
 
     private String buildResponseMessage(Response response) {
@@ -50,7 +56,13 @@ public class ResponseWriter {
 
     private void buildHeaderContent(Response response, StringBuffer headerResponse){
         if (response.getBody() != null) {
-            headerResponse.append("Content-Type: text/xml; charset=utf-8\n");
+            if (response.isImage()){
+                headerResponse.append("Content-Type: text/plain");
+                System.out.println(String.valueOf(response.getBody()));
+            } else {
+                headerResponse.append("Content-Type: text/xml; charset=utf-8\n");
+            }
+
             headerResponse.append("Content-Length:" + response.getContentLength()+ '\n');
         }
     }

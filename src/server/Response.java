@@ -5,8 +5,9 @@ import java.util.Map;
 
 public class Response {
     private final int code;
-    private String body;
+    private byte[] body;
     private Map<String, String> header = new HashMap<String, String>();
+    private boolean image;
 
     public Response(int code) {
         this.code = code;
@@ -17,10 +18,14 @@ public class Response {
     }
 
     public void setBody(String body) {
+        this.body = body.getBytes();
+    }
+
+    public void setBody(byte[] body){
         this.body = body;
     }
 
-    public String getBody() {
+    public byte[] getBody() {
         return body;
     }
 
@@ -29,7 +34,7 @@ public class Response {
     }
 
     public int getContentLength(){
-        return (body == null) ? 0 : body.length();
+        return (body == null) ? 0 : body.length;
     }
 
     @Override
@@ -65,5 +70,13 @@ public class Response {
 
     public Map<String, String> getHeader() {
         return header;
+    }
+
+    public void setImage(boolean image) {
+        this.image = image;
+    }
+
+    public boolean isImage() {
+        return image;
     }
 }
