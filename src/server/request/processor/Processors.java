@@ -16,6 +16,7 @@ public class Processors {
         processors.put("/form", new Form());
         processors.put("/redirect", new Redirect());
         processors.put("/parameters", new Parameters());
+        processors.put("/image.gif", new Image());
     }
 
     public static Processor get(Request request){
