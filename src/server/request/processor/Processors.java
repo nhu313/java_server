@@ -15,6 +15,7 @@ public class Processors {
         processors.put("/", new Index());
         processors.put("/form", new Form());
         processors.put("/redirect", new Redirect());
+        processors.put("/parameters", new Parameters());
     }
 
     public static Processor get(Request request){

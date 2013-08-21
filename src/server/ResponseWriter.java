@@ -29,12 +29,16 @@ public class ResponseWriter {
     private String buildHeader(Response response) {
         StringBuffer headerResponse = new StringBuffer();
         buildHeaderFirstLine(response, headerResponse);
+        buildHeaderContent(response, headerResponse);
+        buildOtherHeaderInfo(response, headerResponse);
+        return headerResponse.toString();
+    }
 
+    private void buildOtherHeaderInfo(Response response, StringBuffer headerResponse) {
         Set<Map.Entry<String, String>> header = response.getHeader().entrySet();
         for (Map.Entry entry : header){
             headerResponse.append(entry.getKey() + ":" + entry.getValue());
         }
-        return headerResponse.toString();
     }
 
     private void buildHeaderFirstLine(Response response, StringBuffer headerResponse) {
@@ -44,16 +48,19 @@ public class ResponseWriter {
         headerResponse.append(" " + HTTP_RESPONSE_MESSAGE.get(code) + '\n');
     }
 
-    //TODO content type and length is part of header, but it's only relevant when there's a body.....????
-    private String buildBody(Response response) {
-        String body = "";
-        String bodyContent = response.getBody();
-        if (bodyContent != null){
-            body += "Content-Type: text/xml; charset=utf-8\n";
-            body += "Content-Length:" + bodyContent.length() + '\n';
-            body += "\r\n" + bodyContent;
+    private void buildHeaderContent(Response response, StringBuffer headerResponse){
+        if (response.getBody() != null) {
+            headerResponse.append("Content-Type: text/xml; charset=utf-8\n");
+            headerResponse.append("Content-Length:" + response.getContentLength()+ '\n');
         }
-        return body;
+    }
+
+    private String buildBody(Response response) {
+        if (response.getBody() == null){
+            return "";
+        } else {
+            return "\r\n" + response.getBody();
+        }
     }
 
 }

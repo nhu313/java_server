@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,12 +27,38 @@ public class RequestParser {
     private void setHeader(Request request, BufferedReader reader) throws IOException {
         String[] values = reader.readLine().split(" ");
         request.setMethod(values[0]);
-        request.setPath(values[1]);
+        setPathAndParams(request, values[1]);
 
         Map<String, String> header = getHeader(reader);
         request.setContentLength(getContentLength(header));
         request.setAlive(getActiveValue(header));
         request.setHost(header.get("Host"));
+    }
+
+    private void setPathAndParams(Request request, String value) {
+        String path = value;
+        if (hasParam(value)){
+            int endOfPath = value.indexOf("?");
+            path = value.substring(0, endOfPath);
+
+            String paramsString = value.substring(endOfPath + 1);
+            setParams(request, paramsString);
+        }
+        request.setPath(path);
+    }
+
+    private void setParams(Request request, String value) {
+        Map<String, String> params = new HashMap<String, String>();
+        String[] paramValues = value.split("&");
+        for (String paramString : paramValues){
+            String[] param = paramString.split("=");
+            params.put(param[0], URLDecoder.decode(param[1]));
+        }
+        request.setParams(params);
+    }
+
+    private boolean hasParam(String path) {
+        return path.contains("?");
     }
 
     private boolean getActiveValue(Map<String, String> header) {

@@ -8,6 +8,9 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RequestParserTest {
     RequestParser handler;
@@ -23,13 +26,56 @@ public class RequestParserTest {
     }
 
     @Test
-    public void parseGetSpecificRouteRequest(){
+    public void parseGetSpecificPathRequest(){
         testRequest("GET", "/board");
     }
 
     @Test
     public void parseEmptyPostRequest(){
         testRequest("POST", "/form");
+    }
+
+    @Test
+    public void testParseRequest_with1Param(){
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("food", "noodle");
+        assertParseRequestWithParam(params);
+    }
+
+    @Test
+    public void testParseRequest_with2Params(){
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("food", "noodle");
+        params.put("place", "home");
+        assertParseRequestWithParam(params);
+    }
+
+    @Test
+    public void testParseRequest_withEncodingParam(){
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("weird", "<>");
+        assertParseRequestWithParam(params);
+
+    }
+
+    private void assertParseRequestWithParam(Map<String, String> params){
+        String method = "GET";
+        String simplePath = "/parameters";
+
+        String path = simplePath + buildParamString(params);
+
+        Request expectedRequest = createHttpRequest(method, simplePath, null);
+        expectedRequest.setParams(params);
+        assertParseRequest(method, path, null, expectedRequest);
+    }
+
+    private String buildParamString(Map<String, String> params) {
+        String paramsString = "?";
+        for (Map.Entry<String, String> entry : params.entrySet()){
+            paramsString += entry.getKey() + "=" + URLEncoder.encode(entry.getValue()) + "&";
+        }
+        paramsString = paramsString.substring(0, paramsString.length() - 1);
+        return paramsString;
     }
 
     @Test
@@ -68,13 +114,17 @@ public class RequestParserTest {
         Assert.assertEquals(request, handler.parse(input));
     }
 
-    private void testRequest(String method, String route) {
-        testRequest(method, route, null);
+    private void testRequest(String method, String path) {
+        testRequest(method, path, null);
     }
 
-    private void testRequest(String method, String route, String body) {
-        Request expectedRequest = createHttpRequest(method, route, body);
-        InputStream input = new ByteArrayInputStream(buildRequestString(method, route, body).getBytes());
+    private void testRequest(String method, String path, String body) {
+        Request expectedRequest = createHttpRequest(method, path, body);
+        assertParseRequest(method, path, body, expectedRequest);
+    }
+
+    private void assertParseRequest(String method, String path, String body, Request expectedRequest) {
+        InputStream input = new ByteArrayInputStream(buildRequestString(method, path, body).getBytes());
         try {
             Assert.assertEquals(expectedRequest, handler.parse(input));
         } catch (IOException e) {
@@ -82,9 +132,9 @@ public class RequestParserTest {
         }
     }
 
-    private String buildRequestString(String method, String route, String body) {
+    private String buildRequestString(String method, String path, String body) {
         StringBuffer request = new StringBuffer();
-        request.append(method + ' ' + route + " HTTP/1.1\n");
+        request.append(method + ' ' + path + " HTTP/1.1\n");
         setBodyContent(body, request);
         return request.toString();
     }
@@ -101,10 +151,10 @@ public class RequestParserTest {
         return (body == null) ? 0 : body.length();
     }
 
-    private Request createHttpRequest(String method, String route, String body) {
+    private Request createHttpRequest(String method, String path, String body) {
         Request expectedRequest = new Request();
         expectedRequest.setMethod(method);
-        expectedRequest.setPath(route);
+        expectedRequest.setPath(path);
         expectedRequest.setBody(body);
         expectedRequest.setContentLength(getContentLength(body));
         return expectedRequest;

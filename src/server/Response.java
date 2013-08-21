@@ -28,6 +28,10 @@ public class Response {
         header.put(type, value);
     }
 
+    public int getContentLength(){
+        return (body == null) ? 0 : body.length();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

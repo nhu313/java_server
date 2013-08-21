@@ -1,5 +1,7 @@
 package server;
 
+import java.util.Map;
+
 public class Request {
     private String method;
     private String path;
@@ -7,6 +9,7 @@ public class Request {
     private int contentLength;
     private boolean alive;
     private String host;
+    private Map<String, String> params;
 
     public Request() {}
 
@@ -64,6 +67,10 @@ public class Request {
         this.host = host;
     }
 
+    public void setParams(Map<String, String> params) {
+        this.params = params;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,6 +83,7 @@ public class Request {
         if (body != null ? !body.equals(request.body) : request.body != null) return false;
         if (host != null ? !host.equals(request.host) : request.host != null) return false;
         if (method != null ? !method.equals(request.method) : request.method != null) return false;
+        if (params != null ? !params.equals(request.params) : request.params != null) return false;
         if (path != null ? !path.equals(request.path) : request.path != null) return false;
 
         return true;
@@ -89,6 +97,7 @@ public class Request {
         result = 31 * result + contentLength;
         result = 31 * result + (alive ? 1 : 0);
         result = 31 * result + (host != null ? host.hashCode() : 0);
+        result = 31 * result + (params != null ? params.hashCode() : 0);
         return result;
     }
 
@@ -101,6 +110,11 @@ public class Request {
                 ", contentLength=" + contentLength +
                 ", alive=" + alive +
                 ", host='" + host + '\'' +
+                ", params=" + params +
                 '}';
+    }
+
+    public Map<String, String> getParams() {
+        return params;
     }
 }
