@@ -4,19 +4,31 @@ import server.Request;
 import server.Response;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Image implements Processor{
 
 
     @Override
     public Response process(Request request) {
-        File file = new File("./");
-        Response response = new Response(200);
-        String body = "";
-        for (String value : file.list()){
-            body += value;
+        try {
+            File file = new File("./resource/image.gif");
+            FileInputStream in = new FileInputStream(file);
+            byte[] buffer = new byte[(int) file.length()];
+            in.read(buffer);
+            in.close();
+            Response response = new Response(200);
+            response.setBody(buffer);
+            response.setImage(true);
+            return response;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        response.setBody(body);
-        return response;
+//        File file = new File("./resource/image.gif");
+        return new Response(404);
     }
 }

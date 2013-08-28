@@ -1,8 +1,6 @@
 package server;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -14,16 +12,15 @@ public class ResponseWriter {
     static {
         HTTP_RESPONSE_MESSAGE.put(200, "OK");
         HTTP_RESPONSE_MESSAGE.put(301, "Moved Permanently");
+        HTTP_RESPONSE_MESSAGE.put(206, "Partial Content");
+
     }
 
     public void write(OutputStream output, Response response) throws IOException {
-        String message = buildResponseMessage(response);
-        PrintWriter outputWriter = new PrintWriter(output, true);
-        outputWriter.println(message);
-    }
-
-    private String buildResponseMessage(Response response) {
-        return buildHeader(response) + buildBody(response);
+        output.write(buildHeader(response).getBytes());
+        if (response.getBody() != null){
+            output.write(response.getBody());
+        }
     }
 
     private String buildHeader(Response response) {
@@ -31,13 +28,14 @@ public class ResponseWriter {
         buildHeaderFirstLine(response, headerResponse);
         buildHeaderContent(response, headerResponse);
         buildOtherHeaderInfo(response, headerResponse);
+       headerResponse.append("\r\n");
         return headerResponse.toString();
     }
 
     private void buildOtherHeaderInfo(Response response, StringBuffer headerResponse) {
         Set<Map.Entry<String, String>> header = response.getHeader().entrySet();
         for (Map.Entry entry : header){
-            headerResponse.append(entry.getKey() + ":" + entry.getValue());
+            headerResponse.append(entry.getKey() + ":" + entry.getValue() + "\n");
         }
     }
 
@@ -50,17 +48,15 @@ public class ResponseWriter {
 
     private void buildHeaderContent(Response response, StringBuffer headerResponse){
         if (response.getBody() != null) {
-            headerResponse.append("Content-Type: text/html; charset=utf-8\n");
-            headerResponse.append("Content-Length:" + response.getContentLength()+ '\n');
+            String contentType = "Content-Type: ";
+            if (response.getContentType() == null){
+                contentType += "text/html";
+            } else {
+                contentType += response.getContentType();
+            }
+            contentType += "\n";
+            headerResponse.append(contentType);
+            headerResponse.append("Content-Length: " + response.getContentLength()+ '\n');
         }
     }
-
-    private String buildBody(Response response) {
-        if (response.getBody() == null){
-            return "";
-        } else {
-            return "\r\n" + response.getBody();
-        }
-    }
-
 }
