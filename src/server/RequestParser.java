@@ -31,7 +31,6 @@ public class RequestParser {
 
         Map<String, String> header = getHeader(reader);
         request.setContentLength(getContentLength(header));
-        request.setAlive(getActiveValue(header));
         request.setHost(header.get("Host"));
 
         String range = header.get("Range");

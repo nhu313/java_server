@@ -7,7 +7,6 @@ public class Request {
     private String path;
     private String body;
     private int contentLength;
-    private boolean alive;
     private String host;
     private Map<String, String> params;
     private int maxContentSize;
@@ -51,15 +50,6 @@ public class Request {
         this.contentLength = contentLength;
     }
 
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
-
-    public boolean isAlive() {
-        return alive;
-    }
-
-
     public String getHost() {
         return host;
     }
@@ -79,7 +69,6 @@ public class Request {
 
         Request request = (Request) o;
 
-        if (alive != request.alive) return false;
         if (contentLength != request.contentLength) return false;
         if (body != null ? !body.equals(request.body) : request.body != null) return false;
         if (host != null ? !host.equals(request.host) : request.host != null) return false;
@@ -96,7 +85,6 @@ public class Request {
         result = 31 * result + (path != null ? path.hashCode() : 0);
         result = 31 * result + (body != null ? body.hashCode() : 0);
         result = 31 * result + contentLength;
-        result = 31 * result + (alive ? 1 : 0);
         result = 31 * result + (host != null ? host.hashCode() : 0);
         result = 31 * result + (params != null ? params.hashCode() : 0);
         return result;
@@ -109,7 +97,6 @@ public class Request {
                 ", path='" + path + '\'' +
                 ", body='" + body + '\'' +
                 ", contentLength=" + contentLength +
-                ", alive=" + alive +
                 ", host='" + host + '\'' +
                 ", params=" + params +
                 '}';

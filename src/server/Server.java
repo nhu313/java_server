@@ -18,6 +18,7 @@ public class Server {
         this.serverSocket = serverSocket;
         this.requestParser = requestParser;
         this.writer = writer;
+        this.processor = processor;
     }
 
     public void start() {
@@ -27,7 +28,7 @@ public class Server {
             while(!serverSocket.isClosed()){
                 Socket clientSocket = serverSocket.accept();
                 Request request = requestParser.parse(clientSocket.getInputStream());
-                Response response = processor.process(request);
+                Response response = Processors.get(request).process(request);
                 writer.write(clientSocket.getOutputStream(), response);
                 clientSocket.close();
             }
