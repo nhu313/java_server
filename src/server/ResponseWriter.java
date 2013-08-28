@@ -50,7 +50,7 @@ public class ResponseWriter {
 
     private void buildHeaderContent(Response response, StringBuffer headerResponse){
         if (response.getBody() != null) {
-            headerResponse.append("Content-Type: text/xml; charset=utf-8\n");
+            headerResponse.append("Content-Type: text/html; charset=utf-8\n");
             headerResponse.append("Content-Length:" + response.getContentLength()+ '\n');
         }
     }

@@ -1,5 +1,6 @@
 package server;
 
+import server.request.processor.Processor;
 import server.request.processor.Processors;
 
 import java.io.IOException;
@@ -10,6 +11,8 @@ public class Server {
     private final ResponseWriter writer;
     private final RequestParser requestParser;
     private ServerSocket serverSocket;
+    private Processor processor;
+
 
     public Server(ServerSocket serverSocket, RequestParser requestParser, ResponseWriter writer) {
         this.serverSocket = serverSocket;
@@ -24,7 +27,7 @@ public class Server {
             while(!serverSocket.isClosed()){
                 Socket clientSocket = serverSocket.accept();
                 Request request = requestParser.parse(clientSocket.getInputStream());
-                Response response = Processors.get(request).process(request);
+                Response response = processor.process(request);
                 writer.write(clientSocket.getOutputStream(), response);
                 clientSocket.close();
             }
