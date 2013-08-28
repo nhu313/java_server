@@ -21,6 +21,7 @@ public class Processors {
         processors.put("/image.png", new FileProcessor());
         processors.put("/file1", new FileProcessor());
         processors.put("/text-file.txt", new FileProcessor());
+        processors.put("/partial_content.txt", new FileProcessor());
     }
 
     public static Processor get(Request request){

@@ -12,6 +12,8 @@ public class ResponseWriter {
     static {
         HTTP_RESPONSE_MESSAGE.put(200, "OK");
         HTTP_RESPONSE_MESSAGE.put(301, "Moved Permanently");
+        HTTP_RESPONSE_MESSAGE.put(206, "Partial Content");
+
     }
 
     public void write(OutputStream output, Response response) throws IOException {

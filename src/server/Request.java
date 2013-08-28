@@ -10,6 +10,7 @@ public class Request {
     private boolean alive;
     private String host;
     private Map<String, String> params;
+    private int maxContentSize;
 
     public Request() {}
 
@@ -116,5 +117,13 @@ public class Request {
 
     public Map<String, String> getParams() {
         return params;
+    }
+
+    public void setMaxContentSize(int maxContentSize) {
+        this.maxContentSize = maxContentSize;
+    }
+
+    public int getMaxContentSize() {
+        return maxContentSize;
     }
 }
