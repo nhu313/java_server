@@ -53,6 +53,7 @@ public class ResponseWriter {
                 contentType += response.getContentType();
             }
             contentType += "\n";
+            headerResponse.append(contentType);
             headerResponse.append("Content-Length: " + response.getContentLength()+ '\n');
         }
     }

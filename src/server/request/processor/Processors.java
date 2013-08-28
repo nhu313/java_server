@@ -20,6 +20,7 @@ public class Processors {
         processors.put("/image.jpeg", new FileProcessor());
         processors.put("/image.png", new FileProcessor());
         processors.put("/file1", new FileProcessor());
+        processors.put("/text-file.txt", new FileProcessor());
     }
 
     public static Processor get(Request request){
