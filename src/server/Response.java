@@ -18,7 +18,9 @@ public class Response {
     }
 
     public void setBody(String body) {
-        this.body = body.getBytes();
+        if (body != null) {
+            this.body = body.getBytes();
+        }
     }
 
     public void setBody(byte[] body){

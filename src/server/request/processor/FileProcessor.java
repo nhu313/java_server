@@ -15,12 +15,9 @@ public class FileProcessor implements Processor{
         try {
             java.io.File file = new java.io.File("./public/file1");
             FileInputStream in = new FileInputStream(file);
-            System.out.println("file length" + file.length());
-            System.out.println(file.getPath());
             byte[] buffer = new byte[(int) file.length()];
             in.read(buffer);
             in.close();
-            System.out.println(buffer.length);
             Response response = new Response(200);
             response.setBody(buffer);
             response.setImage(true);
