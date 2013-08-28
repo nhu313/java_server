@@ -16,7 +16,9 @@ public class Processors {
         processors.put("/form", new Form());
         processors.put("/redirect", new Redirect());
         processors.put("/parameters", new Parameters());
-        processors.put("/image.gif", new Image());
+        processors.put("/image.gif", new FileProcessor());
+        processors.put("/image.jpeg", new FileProcessor());
+        processors.put("/image.png", new FileProcessor());
         processors.put("/file1", new FileProcessor());
     }
 

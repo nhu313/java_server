@@ -46,7 +46,13 @@ public class ResponseWriter {
 
     private void buildHeaderContent(Response response, StringBuffer headerResponse){
         if (response.getBody() != null) {
-            headerResponse.append("Content-Type: text/html\n");
+            String contentType = "Content-Type: ";
+            if (response.getContentType() == null){
+                contentType += "text/html";
+            } else {
+                contentType += response.getContentType();
+            }
+            contentType += "\n";
             headerResponse.append("Content-Length: " + response.getContentLength()+ '\n');
         }
     }

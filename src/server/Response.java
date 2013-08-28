@@ -8,6 +8,7 @@ public class Response {
     private byte[] body;
     private Map<String, String> header = new HashMap<String, String>();
     private boolean image;
+    private String contentType;
 
     public Response(int code) {
         this.code = code;
@@ -80,5 +81,13 @@ public class Response {
 
     public boolean isImage() {
         return image;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getContentType() {
+        return contentType;
     }
 }
