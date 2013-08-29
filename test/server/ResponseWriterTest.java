@@ -20,7 +20,7 @@ public class ResponseWriterTest {
         Response response = new Response(200);
         MockOutputStream output = new MockOutputStream();
         writer.write(output, response);
-        Assert.assertEquals("HTTP/1.1 200 OK", output.getValue());
+        Assert.assertEquals("HTTP/1.1 200 OK\n", output.getValue());
     }
 
     @Test
@@ -31,8 +31,27 @@ public class ResponseWriterTest {
         MockOutputStream output = new MockOutputStream();
         writer.write(output, response);
         String expectedString = "HTTP/1.1 200 OK\n" +
-                "Content-Type: text/xml; charset=utf-8\n" +
-                "Content-Length:" + body.length() + "\n" +
+                "Content-Type: text/html\n" +
+                "Content-Length: " + body.length() + "\n" +
+                "\r\n" + body;
+        Assert.assertEquals(expectedString, output.getValue());
+    }
+
+    @Test
+    public void testWrite_ResponseWithBodyWithContentType() throws IOException {
+        String body = "The Internet: where men are men, women are men, and children are FBI agents.";
+        String contentType = "text/plain";
+        Response response = new Response(200);
+        response.setBody(body);
+        response.setContentType(contentType);
+
+        MockOutputStream output = new MockOutputStream();
+
+        writer.write(output, response);
+
+        String expectedString = "HTTP/1.1 200 OK\n" +
+                "Content-Type: " + contentType + "\n" +
+                "Content-Length: " + body.length() + "\n" +
                 "\r\n" + body;
         Assert.assertEquals(expectedString, output.getValue());
     }
@@ -47,7 +66,7 @@ public class ResponseWriterTest {
         writer.write(output, response);
 
         String expected = "HTTP/1.1 301 Moved Permanently\n" +
-                            "Location:" + host;
+                          "Location:" + host + "\n";
 
         Assert.assertEquals(expected, output.getValue());
     }

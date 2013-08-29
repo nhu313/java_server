@@ -13,7 +13,7 @@ public class MockOutputStream extends OutputStream {
 
     @Override
     public void write(byte[] bytes, int off, int len) throws IOException {
-        value += (new String(bytes)).trim();
+        value += (new String(bytes));
     }
 
     public String getValue(){

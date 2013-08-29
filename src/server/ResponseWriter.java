@@ -19,6 +19,7 @@ public class ResponseWriter {
     public void write(OutputStream output, Response response) throws IOException {
         output.write(buildHeader(response).getBytes());
         if (response.getBody() != null){
+            output.write("\r\n".getBytes());
             output.write(response.getBody());
         }
     }
@@ -28,7 +29,6 @@ public class ResponseWriter {
         buildHeaderFirstLine(response, headerResponse);
         buildHeaderContentInfo(response, headerResponse);
         buildOtherHeaderInfo(response, headerResponse);
-        headerResponse.append("\r\n");
         return headerResponse.toString();
     }
 
