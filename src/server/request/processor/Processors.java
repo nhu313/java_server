@@ -19,6 +19,7 @@ public class Processors {
         processors.put("/image.gif", new FileProcessor());
         processors.put("/image.jpeg", new FileProcessor());
         processors.put("/image.png", new FileProcessor());
+        processors.put("/so_happy.gif", new FileProcessor());
         processors.put("/file1", new FileProcessor());
         processors.put("/text-file.txt", new FileProcessor());
         processors.put("/partial_content.txt", new FileProcessor());

@@ -15,9 +15,22 @@ public class IndexTest {
     }
 
     @Test
-    public void testProcess_SimpleRequest(){
+    public void testProcess(){
+        System.setProperty("public_directory", "./test/resource");
         Request request = new Request("GET", "/");
+
         Response response = new Response(200);
+        response.setBody(buildBody());
+
         Assert.assertEquals(response, processor.process(request));
+    }
+
+    private String buildBody() {
+        StringBuffer body = new StringBuffer();
+        body.append("<ul>");
+        body.append("<li><a href=\"/file1\">file1</a></li>");
+        body.append("<li><a href=\"/image.gif\">image.gif</a></li>");
+        body.append("</ul>");
+        return body.toString();
     }
 }

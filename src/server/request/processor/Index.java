@@ -10,7 +10,7 @@ public class Index implements Processor{
 
     @Override
     public Response process(Request request) {
-        File directory = new File("./public");
+        File directory = new File(System.getProperty("public_directory"));
         File[] contents = directory.listFiles();
         Response response = new Response(200);
         response.setBody(buildBody(contents));
@@ -21,9 +21,8 @@ public class Index implements Processor{
         StringBuilder fileList = new StringBuilder();
         fileList.append("<ul>");
         for (File file : contents){
-            String filePath = file.getPath().replace("./public/", "");
-
-            fileList.append("<li><a href=" + filePath + ">" + file.getName() + "</a></li>");
+            String filePath = file.getPath().replace(System.getProperty("public_directory"), "");
+            fileList.append("<li><a href=\"" + filePath + "\">" + file.getName() + "</a></li>");
         }
         fileList.append("</ul>");
         return fileList.toString();

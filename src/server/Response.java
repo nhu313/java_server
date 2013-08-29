@@ -1,16 +1,23 @@
 package server;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Response {
-    private final int code;
+    private int code;
     private byte[] body;
     private Map<String, String> header = new HashMap<String, String>();
-    private boolean image;
     private String contentType;
+    private long fileLength;
+
+    public Response(){}
 
     public Response(int code) {
+        this.code = code;
+    }
+
+    public void setCode(int code){
         this.code = code;
     }
 
@@ -40,47 +47,8 @@ public class Response {
         return (body == null) ? 0 : body.length;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Response response = (Response) o;
-
-        if (code != response.code) return false;
-        if (body != null ? !body.equals(response.body) : response.body != null) return false;
-        if (header != null ? !header.equals(response.header) : response.header != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = code;
-        result = 31 * result + (body != null ? body.hashCode() : 0);
-        result = 31 * result + (header != null ? header.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Response{" +
-                "code=" + code +
-                ", body='" + body + '\'' +
-                ", header=" + header +
-                '}';
-    }
-
     public Map<String, String> getHeader() {
         return header;
-    }
-
-    public void setImage(boolean image) {
-        this.image = image;
-    }
-
-    public boolean isImage() {
-        return image;
     }
 
     public void setContentType(String contentType) {
@@ -89,5 +57,51 @@ public class Response {
 
     public String getContentType() {
         return contentType;
+    }
+
+    public void setFileLength(long fileSize) {
+        this.fileLength = fileSize;
+    }
+
+    public long getFileLength() {
+        return fileLength;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Response response = (Response) o;
+
+        if (code != response.code) return false;
+        if (fileLength != response.fileLength) return false;
+        if (!Arrays.equals(body, response.body)) return false;
+        if (contentType != null ? !contentType.equals(response.contentType) : response.contentType != null)
+            return false;
+        if (header != null ? !header.equals(response.header) : response.header != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = code;
+        result = 31 * result + (body != null ? Arrays.hashCode(body) : 0);
+        result = 31 * result + (header != null ? header.hashCode() : 0);
+        result = 31 * result + (contentType != null ? contentType.hashCode() : 0);
+        result = 31 * result + (int) (fileLength ^ (fileLength >>> 32));
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Response{" +
+                "code=" + code +
+                ", body=" + Arrays.toString(body) +
+                ", header=" + header +
+                ", contentType='" + contentType + '\'' +
+                ", fileLength=" + fileLength +
+                '}';
     }
 }

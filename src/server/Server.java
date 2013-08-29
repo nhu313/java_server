@@ -18,7 +18,6 @@ public class Server {
         this.serverSocket = serverSocket;
         this.requestParser = requestParser;
         this.writer = writer;
-        this.processor = processor;
     }
 
     public void start() {

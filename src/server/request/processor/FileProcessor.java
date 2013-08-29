@@ -5,7 +5,6 @@ import server.Response;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class FileProcessor implements Processor{
@@ -13,32 +12,43 @@ public class FileProcessor implements Processor{
 
     @Override
     public Response process(Request request) {
+        Response response = new Response();
         if ("GET".equals(request.getMethod())){
-        try {
-
-            String path = request.getPath();
-
-            File file = new java.io.File("./public" + path);
-            byte[] buffer = getFileBytes(file, request.getMaxContentSize());
-            Response response = null;
-            if (buffer.length < file.length()){
-                response = new Response(206);
-            } else {
-                response = new Response(200);
+            try {
+                setBody(request, response);
+                setContentType(request.getPath(), response);
+                setCode(response);
+            } catch (Exception e) {
+                //            e.printStackTrace();
+                response.setCode(404);
             }
-            response.setBody(buffer);
-            if (path.matches(".*(jpeg|gif|png).*")){
-                String contentType = path.substring(path.lastIndexOf(".") + 1, path.length());
-                response.setContentType("image/" + contentType);
-                response.setImage(true);
-            }
-            return response;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new Response(404);
         } else {
-            return new Response(405);
+            response.setCode(405);
+        }
+        return response;
+    }
+
+    private void setCode(Response response) {
+        if (response.getContentLength() < response.getFileLength()){
+            response.setCode(206);
+        } else {
+            response.setCode(200);
+        }
+    }
+
+    private Response setBody(Request request, Response response) throws IOException {
+        String path = request.getPath();
+        File file = new File(System.getProperty("public_directory") + path);
+        byte[] buffer = getFileBytes(file, request.getMaxContentSize());
+        response.setFileLength(file.length());
+        response.setBody(buffer);
+        return response;
+    }
+
+    private void setContentType(String path, Response response) {
+        if (path.matches(".*(jpeg|gif|png).*")){
+            String contentType = path.substring(path.lastIndexOf(".") + 1, path.length());
+            response.setContentType("image/" + contentType);
         }
     }
 

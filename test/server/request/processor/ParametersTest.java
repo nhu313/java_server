@@ -20,7 +20,7 @@ public class ParametersTest {
         request.setParams(params);
 
         Response response = new Parameters().process(request);
-        String responseBody = String.valueOf(response.getBody());
+        String responseBody = new String(response.getBody());
         Assert.assertTrue(responseBody.contains("variable_1 = Operators <, >, =, !=; +, -, *, &, @, #, $, [, ]: \"is that all\"?"));
         Assert.assertTrue(responseBody.contains("variable_2 = stuff"));
     }

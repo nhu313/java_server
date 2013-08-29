@@ -26,9 +26,9 @@ public class ResponseWriter {
     private String buildHeader(Response response) {
         StringBuffer headerResponse = new StringBuffer();
         buildHeaderFirstLine(response, headerResponse);
-        buildHeaderContent(response, headerResponse);
+        buildHeaderContentInfo(response, headerResponse);
         buildOtherHeaderInfo(response, headerResponse);
-       headerResponse.append("\r\n");
+        headerResponse.append("\r\n");
         return headerResponse.toString();
     }
 
@@ -46,7 +46,7 @@ public class ResponseWriter {
         headerResponse.append(" " + HTTP_RESPONSE_MESSAGE.get(code) + '\n');
     }
 
-    private void buildHeaderContent(Response response, StringBuffer headerResponse){
+    private void buildHeaderContentInfo(Response response, StringBuffer headerResponse){
         if (response.getBody() != null) {
             String contentType = "Content-Type: ";
             if (response.getContentType() == null){
@@ -54,8 +54,7 @@ public class ResponseWriter {
             } else {
                 contentType += response.getContentType();
             }
-            contentType += "\n";
-            headerResponse.append(contentType);
+            headerResponse.append(contentType + "\n");
             headerResponse.append("Content-Length: " + response.getContentLength()+ '\n');
         }
     }
