@@ -8,7 +8,7 @@ import java.net.ServerSocket;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        System.setProperty("public_directory", "./resource");
+        System.setProperty("public_directory", "/Users/nhunguyen/Documents/server/Server/resource");
         RequestParser parser = new RequestParser();
         ResponseWriter writer = new ResponseWriter();
         Server server = new Server(new ServerSocket(5000), parser, writer);

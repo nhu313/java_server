@@ -1,11 +1,14 @@
 package server.request.processor;
 
 import server.Request;
+import server.Response;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Processors {
+
+
 
     private final static Processor DEFAULT_PROCESSOR = new NotFound();
 
@@ -23,7 +26,10 @@ public class Processors {
         processors.put("/file1", new FileProcessor());
         processors.put("/text-file.txt", new FileProcessor());
         processors.put("/partial_content.txt", new FileProcessor());
+        processors.put("/logs", new Log());
     }
+
+
 
     public static Processor get(Request request){
         Processor processor = processors.get(request.getPath());
@@ -32,6 +38,5 @@ public class Processors {
         } else {
             return processor;
         }
-
     }
 }
