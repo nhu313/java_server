@@ -3,10 +3,7 @@ package server.request.processor;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import server.Config;
-import server.Method;
-import server.Request;
-import server.Response;
+import server.*;
 
 public class IndexTest {
     private Processor processor;
@@ -21,7 +18,7 @@ public class IndexTest {
         System.setProperty(Config.DIRECTORY_PATH_KEY, "./test/resource");
         Request request = new Request(Method.GET.name(), "/");
 
-        Response response = new Response(200);
+        Response response = new Response(ResponseCode.OK);
         response.setBody(buildBody());
 
         Assert.assertEquals(response, processor.process(request));

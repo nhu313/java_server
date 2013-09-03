@@ -5,18 +5,19 @@ public enum ResponseCode {
     AUTHENTICATION_FAIL(401, "Authentication required"),
     NOT_FOUND(404, "Not Found"),
     MOVED(301, "Moved Permanently"),
-    PARTIAL_CONTENT(206, "Partial Content");
+    PARTIAL_CONTENT(206, "Partial Content"),
+    METHOD_NOT_ALLOW(405, "Method not allowed");
 
-    private final String message;
+    private final String description;
     private final int code;
 
-    ResponseCode(int code, String message) {
+    ResponseCode(int code, String description) {
         this.code = code;
-        this.message = message;
+        this.description = description;
     }
 
-    public String getMessage() {
-        return message;
+    public String getDescription() {
+        return description;
     }
 
     public int getCode() {

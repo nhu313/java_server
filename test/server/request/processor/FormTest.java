@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import server.Request;
 import server.Response;
+import server.ResponseCode;
 
 public class FormTest {
 
@@ -42,7 +43,7 @@ public class FormTest {
     private void assertProcess(String method, String body, String responseBody){
         Request request = new Request(method, "/form");
         request.setBody(body);
-        Response response = new Response(200);
+        Response response = new Response(ResponseCode.OK);
         response.setBody(responseBody);
         Assert.assertEquals(response, processor.process(request));
     }

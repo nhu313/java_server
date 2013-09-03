@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import server.Request;
 import server.Response;
+import server.ResponseCode;
 
 public class RedirectTest {
 
@@ -11,7 +12,7 @@ public class RedirectTest {
     public void testProcess(){
         String host = "localhost:5000";
         Processor processor = new Redirect();
-        Response response = new Response(301);
+        Response response = new Response(ResponseCode.MOVED);
         response.addHeader("Location", "http://" + host + "/");
 
         Request request = new Request("GET", "/redirect");

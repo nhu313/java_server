@@ -3,6 +3,7 @@ package server.request.processor;
 import server.Config;
 import server.Request;
 import server.Response;
+import server.ResponseCode;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +14,7 @@ public class Index implements Processor{
     public Response process(Request request) {
         File directory = new File(Config.DIRECTORY_PATH);
         File[] contents = directory.listFiles();
-        Response response = new Response(200);
+        Response response = new Response(ResponseCode.OK);
         response.setBody(buildBody(contents));
         return response;
     }

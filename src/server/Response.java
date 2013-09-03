@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Response {
-    private int code;
+    private ResponseCode code;
     private byte[] body;
     private Map<String, String> header = new HashMap<String, String>();
     private String contentType;
@@ -13,15 +13,15 @@ public class Response {
 
     public Response(){}
 
-    public Response(int code) {
+    public Response(ResponseCode code) {
         this.code = code;
     }
 
-    public void setCode(int code){
+    public void setCode(ResponseCode code){
         this.code = code;
     }
 
-    public int getCode() {
+    public ResponseCode getCode() {
         return code;
     }
 
@@ -86,7 +86,7 @@ public class Response {
 
     @Override
     public int hashCode() {
-        int result = code;
+        int result = code.getCode();
         result = 31 * result + (body != null ? Arrays.hashCode(body) : 0);
         result = 31 * result + (header != null ? header.hashCode() : 0);
         result = 31 * result + (contentType != null ? contentType.hashCode() : 0);

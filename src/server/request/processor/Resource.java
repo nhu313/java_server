@@ -1,9 +1,6 @@
 package server.request.processor;
 
-import server.Config;
-import server.Method;
-import server.Request;
-import server.Response;
+import server.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,19 +19,19 @@ public class Resource implements Processor{
                 setCode(response);
             } catch (Exception e) {
                 //            e.printStackTrace();
-                response.setCode(404);
+                response.setCode(ResponseCode.NOT_FOUND);
             }
         } else {
-            response.setCode(405);
+            response.setCode(ResponseCode.METHOD_NOT_ALLOW);
         }
         return response;
     }
 
     private void setCode(Response response) {
         if (response.getContentLength() < response.getFileLength()){
-            response.setCode(206);
+            response.setCode(ResponseCode.PARTIAL_CONTENT);
         } else {
-            response.setCode(200);
+            response.setCode(ResponseCode.OK);
         }
     }
 

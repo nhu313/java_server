@@ -33,7 +33,7 @@ public class ServerTest {
         Request request = new Request();
         EasyMock.expect(parser.parse(socket.getInputStream())).andReturn(request);
 
-        Response response = new Response(404);
+        Response response = new Response(ResponseCode.NOT_FOUND);
         ResponseWriter writer = EasyMock.createMock(ResponseWriter.class);
         writer.write(socket.getOutputStream(), response);
         EasyMock.expectLastCall();

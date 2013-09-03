@@ -8,14 +8,6 @@ import java.util.Set;
 public class ResponseWriter {
     public static final String HTTP_VERSION = "HTTP/1.1";
 
-    private static final Map<Integer, String> HTTP_RESPONSE_MESSAGE = new HashMap<Integer, String>();
-    static {
-        HTTP_RESPONSE_MESSAGE.put(200, "OK");
-        HTTP_RESPONSE_MESSAGE.put(301, "Moved Permanently");
-        HTTP_RESPONSE_MESSAGE.put(206, "Partial Content");
-
-    }
-
     public void write(OutputStream output, Response response) throws IOException {
         output.write(buildHeader(response).getBytes());
         if (response.getBody() != null){
@@ -40,10 +32,10 @@ public class ResponseWriter {
     }
 
     private void buildHeaderFirstLine(Response response, StringBuffer headerResponse) {
-        int code = response.getCode();
+        ResponseCode code = response.getCode();
         headerResponse.append(HTTP_VERSION);
-        headerResponse.append(" " + code);
-        headerResponse.append(" " + HTTP_RESPONSE_MESSAGE.get(code) + '\n');
+        headerResponse.append(" " + code.getCode());
+        headerResponse.append(" " + code.getDescription() + '\n');
     }
 
     private void buildHeaderContentInfo(Response response, StringBuffer headerResponse){
