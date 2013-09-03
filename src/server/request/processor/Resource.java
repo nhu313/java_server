@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class FileProcessor implements Processor{
+public class Resource implements Processor{
 
 
     @Override

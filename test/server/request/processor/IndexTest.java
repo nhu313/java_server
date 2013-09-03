@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import server.Config;
+import server.Method;
 import server.Request;
 import server.Response;
 
@@ -18,7 +19,7 @@ public class IndexTest {
     @Test
     public void testProcess(){
         System.setProperty(Config.DIRECTORY_PATH_KEY, "./test/resource");
-        Request request = new Request("GET", "/");
+        Request request = new Request(Method.GET.name(), "/");
 
         Response response = new Response(200);
         response.setBody(buildBody());

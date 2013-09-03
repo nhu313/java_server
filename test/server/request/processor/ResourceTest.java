@@ -11,7 +11,7 @@ import server.Response;
 import java.io.File;
 import java.io.FileInputStream;
 
-public class FileProcessorTest {
+public class ResourceTest {
     private static final String DIRECTORY_PATH = "./test/resource";
 
     private Processor processor;
@@ -19,7 +19,7 @@ public class FileProcessorTest {
     @Before
     public void setUp(){
         System.setProperty(Config.DIRECTORY_PATH_KEY, DIRECTORY_PATH);
-        processor = new FileProcessor();
+        processor = new Resource();
     }
 
     @Test

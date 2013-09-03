@@ -21,17 +21,17 @@ public class RequestParserTest {
 
     @Test
     public void parseGetIndexRequest(){
-        testRequest(Method.GET, "/");
+        assertRequestDataIsSameAsInput(Method.GET, "/");
     }
 
     @Test
     public void parseGetSpecificPathRequest(){
-        testRequest(Method.GET, "/board");
+        assertRequestDataIsSameAsInput(Method.GET, "/board");
     }
 
     @Test
     public void parseEmptyPostRequest(){
-        testRequest(Method.POST, "/form");
+        assertRequestDataIsSameAsInput(Method.POST, "/form");
     }
 
     @Test
@@ -65,7 +65,7 @@ public class RequestParserTest {
 
         Request expectedRequest = createHttpRequest(method, simplePath, null);
         expectedRequest.setParams(params);
-        assertParseRequest(method, path, null, expectedRequest);
+        assertRequestDataIsSameAsInput(method, path, null, expectedRequest);
     }
 
     private String buildParamString(Map<String, String> params) {
@@ -80,7 +80,7 @@ public class RequestParserTest {
     @Test
     public void testParseRequest_withBody(){
         String textBody = "request body";
-        testRequest(Method.POST, "/file", textBody);
+        assertRequestDataIsSameAsInput(Method.POST, "/file", textBody);
     }
 
     @Test
@@ -90,7 +90,7 @@ public class RequestParserTest {
                 "Will: He liked James Brown?\n" +
                 "Vivian: He even wore his hair like him.\n" +
                 "Will: [laughs] He had hair?";
-        testRequest(Method.POST, "/file", textBody);
+        assertRequestDataIsSameAsInput(Method.POST, "/file", textBody);
     }
 
     @Test
@@ -113,21 +113,22 @@ public class RequestParserTest {
         Assert.assertEquals(request, parser.parse(input));
     }
 
-    private void testRequest(Method method, String path) {
-        testRequest(method, path, null);
+    private void assertRequestDataIsSameAsInput(Method method, String path) {
+        assertRequestDataIsSameAsInput(method, path, null);
     }
 
-    private void testRequest(Method method, String path, String body) {
+    private void assertRequestDataIsSameAsInput(Method method, String path, String body) {
         Request expectedRequest = createHttpRequest(method, path, body);
-        assertParseRequest(method, path, body, expectedRequest);
+        assertRequestDataIsSameAsInput(method, path, body, expectedRequest);
     }
 
-    private void assertParseRequest(Method method, String path, String body, Request expectedRequest) {
+    private void assertRequestDataIsSameAsInput(Method method, String path, String body, Request expectedRequest) {
         InputStream input = new ByteArrayInputStream(buildRequestString(method, path, body).getBytes());
         try {
             Assert.assertEquals(expectedRequest, parser.parse(input));
         } catch (IOException e) {
             e.printStackTrace();
+            Assert.fail();
         }
     }
 

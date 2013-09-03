@@ -21,9 +21,8 @@ public class Index implements Processor{
     private String buildBody(File[] contents) {
         StringBuilder fileList = new StringBuilder();
         fileList.append("<ul>");
-        for (File file : contents){
-            String filePath = file.getPath().replace(Config.DIRECTORY_PATH, "");
-            fileList.append("<li><a href=\"" + filePath + "\">" + file.getName() + "</a></li>");
+        for (String fileName : DirectoryReader.fileNames()){
+            fileList.append("<li><a href=\"/" + fileName + "\">" + fileName + "</a></li>");
         }
         fileList.append("</ul>");
         return fileList.toString();

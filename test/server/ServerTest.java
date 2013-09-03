@@ -4,18 +4,20 @@ import junit.framework.Assert;
 import mocks.MockSocket;
 import org.easymock.EasyMock;
 import org.junit.Test;
+import server.request.processor.ProcessorFactory;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 
 public class ServerTest {
+    ProcessorFactory processorFactory = null;
 
     @Test
     public void testStart_whenSocketIsClosed(){
         ServerSocket serverSocket = getMockServerSocket(true);
         EasyMock.replay(serverSocket);
 
-        Server server = new Server(serverSocket, null, null);
+        Server server = new Server(serverSocket, null, null, processorFactory);
         server.start();
 
         EasyMock.verify(serverSocket);
@@ -38,7 +40,7 @@ public class ServerTest {
 
         EasyMock.replay(serverSocket, parser, writer);
 
-        Server server = new Server(serverSocket, parser, writer);
+        Server server = new Server(serverSocket, parser, writer, processorFactory);
         server.start();
 
         EasyMock.verify(serverSocket, parser, writer);
@@ -58,7 +60,7 @@ public class ServerTest {
 
         EasyMock.replay(serverSocket, parser, writer);
 
-        Server server = new Server(serverSocket, parser, writer);
+        Server server = new Server(serverSocket, parser, writer, processorFactory);
         server.start();
 
         EasyMock.verify(serverSocket, parser, writer);
