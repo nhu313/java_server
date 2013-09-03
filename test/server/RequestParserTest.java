@@ -1,7 +1,6 @@
 package server;
 
 import junit.framework.Assert;
-import mocks.MockInputStream;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,26 +12,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequestParserTest {
-    RequestParser handler;
+    RequestParser parser;
 
     @Before
     public void setUp(){
-        handler = new RequestParser();
+        parser = new RequestParser();
     }
 
     @Test
     public void parseGetIndexRequest(){
-        testRequest("GET", "/");
+        testRequest(Method.GET, "/");
     }
 
     @Test
     public void parseGetSpecificPathRequest(){
-        testRequest("GET", "/board");
+        testRequest(Method.GET, "/board");
     }
 
     @Test
     public void parseEmptyPostRequest(){
-        testRequest("POST", "/form");
+        testRequest(Method.POST, "/form");
     }
 
     @Test
@@ -59,7 +58,7 @@ public class RequestParserTest {
     }
 
     private void assertParseRequestWithParam(Map<String, String> params){
-        String method = "GET";
+        Method method = Method.GET;
         String simplePath = "/parameters";
 
         String path = simplePath + buildParamString(params);
@@ -81,7 +80,7 @@ public class RequestParserTest {
     @Test
     public void testParseRequest_withBody(){
         String textBody = "request body";
-        testRequest("POST", "/file", textBody);
+        testRequest(Method.POST, "/file", textBody);
     }
 
     @Test
@@ -91,7 +90,7 @@ public class RequestParserTest {
                 "Will: He liked James Brown?\n" +
                 "Vivian: He even wore his hair like him.\n" +
                 "Will: [laughs] He had hair?";
-        testRequest("POST", "/file", textBody);
+        testRequest(Method.POST, "/file", textBody);
     }
 
     @Test
@@ -101,7 +100,7 @@ public class RequestParserTest {
         InputStream input = new ByteArrayInputStream(requestString.getBytes());
         Request request = new Request("GET", "/");
         request.setHost(host);
-        Assert.assertEquals(request, handler.parse(input));
+        Assert.assertEquals(request, parser.parse(input));
     }
 
     @Test
@@ -111,30 +110,30 @@ public class RequestParserTest {
         InputStream input = new ByteArrayInputStream(requestString.getBytes());
         Request request = new Request("GET", "/");
         request.setHost(host);
-        Assert.assertEquals(request, handler.parse(input));
+        Assert.assertEquals(request, parser.parse(input));
     }
 
-    private void testRequest(String method, String path) {
+    private void testRequest(Method method, String path) {
         testRequest(method, path, null);
     }
 
-    private void testRequest(String method, String path, String body) {
+    private void testRequest(Method method, String path, String body) {
         Request expectedRequest = createHttpRequest(method, path, body);
         assertParseRequest(method, path, body, expectedRequest);
     }
 
-    private void assertParseRequest(String method, String path, String body, Request expectedRequest) {
+    private void assertParseRequest(Method method, String path, String body, Request expectedRequest) {
         InputStream input = new ByteArrayInputStream(buildRequestString(method, path, body).getBytes());
         try {
-            Assert.assertEquals(expectedRequest, handler.parse(input));
+            Assert.assertEquals(expectedRequest, parser.parse(input));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private String buildRequestString(String method, String path, String body) {
+    private String buildRequestString(Method method, String path, String body) {
         StringBuffer request = new StringBuffer();
-        request.append(method + ' ' + path + " HTTP/1.1\n");
+        request.append(method.name() + ' ' + path + " HTTP/1.1\n");
         setBodyContent(body, request);
         return request.toString();
     }
@@ -151,7 +150,7 @@ public class RequestParserTest {
         return (body == null) ? 0 : body.length();
     }
 
-    private Request createHttpRequest(String method, String path, String body) {
+    private Request createHttpRequest(Method method, String path, String body) {
         Request expectedRequest = new Request();
         expectedRequest.setMethod(method);
         expectedRequest.setPath(path);

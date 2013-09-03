@@ -1,3 +1,5 @@
+import server.Method;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.InputStream;
@@ -8,6 +10,11 @@ import java.net.URLEncoder;
 public class Test {
 
     @org.junit.Test
+    public void testMethod(){
+        System.out.println(Method.valueOf("GET"));
+    }
+
+//    @org.junit.Test
     public void test() throws UnsupportedEncodingException {
         InputStream stream = this.getClass().getResourceAsStream("/resource/file1");
 

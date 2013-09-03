@@ -1,5 +1,7 @@
 package server.request.processor;
 
+import server.Config;
+import server.Method;
 import server.Request;
 import server.Response;
 
@@ -13,7 +15,7 @@ public class FileProcessor implements Processor{
     @Override
     public Response process(Request request) {
         Response response = new Response();
-        if ("GET".equals(request.getMethod())){
+        if (Method.GET == request.getMethod()){
             try {
                 setBody(request, response);
                 setContentType(request.getPath(), response);
@@ -38,7 +40,7 @@ public class FileProcessor implements Processor{
 
     private Response setBody(Request request, Response response) throws IOException {
         String path = request.getPath();
-        File file = new File(System.getProperty("public_directory") + path);
+        File file = new File(Config.DIRECTORY_PATH + path);
         byte[] buffer = getFileBytes(file, request.getMaxContentSize());
         response.setFileLength(file.length());
         response.setBody(buffer);

@@ -3,7 +3,7 @@ package server;
 import java.util.Map;
 
 public class Request {
-    private String method;
+    private Method method;
     private String path;
     private String body;
     private int contentLength;
@@ -14,16 +14,16 @@ public class Request {
     public Request() {}
 
     public Request(String method, String path) {
-        this.method = method;
+        this.method = Method.valueOf(method);
         this.path = path;
     }
 
-    public String getMethod() {
+    public Method getMethod() {
         return method;
     }
 
     public void setMethod(String method) {
-        this.method = method;
+        this.method = Method.valueOf(method);
     }
 
     public String getPath() {
@@ -60,6 +60,18 @@ public class Request {
 
     public void setParams(Map<String, String> params) {
         this.params = params;
+    }
+
+    public Map<String, String> getParams() {
+        return params;
+    }
+
+    public void setMaxContentSize(int maxContentSize) {
+        this.maxContentSize = maxContentSize;
+    }
+
+    public int getMaxContentSize() {
+        return maxContentSize;
     }
 
     @Override
@@ -102,15 +114,7 @@ public class Request {
                 '}';
     }
 
-    public Map<String, String> getParams() {
-        return params;
-    }
-
-    public void setMaxContentSize(int maxContentSize) {
-        this.maxContentSize = maxContentSize;
-    }
-
-    public int getMaxContentSize() {
-        return maxContentSize;
+    public void setMethod(Method method) {
+        this.method = method;
     }
 }

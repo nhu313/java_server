@@ -3,6 +3,7 @@ package server.request.processor;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import server.Config;
 import server.Request;
 import server.Response;
 
@@ -16,7 +17,7 @@ public class IndexTest {
 
     @Test
     public void testProcess(){
-        System.setProperty("public_directory", "./test/resource");
+        System.setProperty(Config.DIRECTORY_PATH_KEY, "./test/resource");
         Request request = new Request("GET", "/");
 
         Response response = new Response(200);

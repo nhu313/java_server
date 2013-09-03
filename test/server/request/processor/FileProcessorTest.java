@@ -3,6 +3,8 @@ package server.request.processor;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import server.Config;
+import server.Method;
 import server.Request;
 import server.Response;
 
@@ -10,20 +12,20 @@ import java.io.File;
 import java.io.FileInputStream;
 
 public class FileProcessorTest {
-    private static final String PUBLIC_DIRECTORY = "./test/resource";
+    private static final String DIRECTORY_PATH = "./test/resource";
 
     private Processor processor;
 
     @Before
     public void setUp(){
-        System.setProperty("public_directory", PUBLIC_DIRECTORY);
+        System.setProperty(Config.DIRECTORY_PATH_KEY, DIRECTORY_PATH);
         processor = new FileProcessor();
     }
 
     @Test
     public void testProcess_whenRequestMethodIsNotGet() throws Exception {
         Request request = new Request();
-        request.setMethod("POST");
+        request.setMethod(Method.POST);
 
         Response response = new Response(405);
         Assert.assertEquals(response, processor.process(request));
@@ -31,9 +33,7 @@ public class FileProcessorTest {
 
     @Test
     public void testProcess_whenFileDoesNotExist(){
-        Request request = new Request();
-        request.setMethod("GET");
-        request.setPath("random path");
+        Request request = createGetRequest("random path");
 
         Response response = new Response(404);
         Assert.assertEquals(response, processor.process(request));
@@ -51,49 +51,54 @@ public class FileProcessorTest {
     }
 
     private Response createPartialResponse(String path, int maxLength) throws Exception {
-        File file = new File(PUBLIC_DIRECTORY + path);
+        File file = new File(DIRECTORY_PATH + path);
 
         Response response = new Response(206);
-        response.setBody("");
         response.setFileLength(file.length());
         response.setBody(readFile(path, maxLength));
         return response;
     }
 
     private Request createPartialRequest(String path, int maxLength) {
-        Request request = new Request();
-        request.setMethod("GET");
+        Request request = createGetRequest(path);
         request.setMaxContentSize(maxLength);
-        request.setPath(path);
         return request;
     }
 
     @Test
     public void testProcess_whenFileExist() throws Exception {
-        assertProcessFile("/file1", null);
+        assertProcessReturns200Response("/file1", null);
     }
 
     @Test
     public void testProcess_whenImageFileExist() throws Exception{
-        assertProcessFile("/image.gif", "image/gif");
+        assertProcessReturns200Response("/image.gif", "image/gif");
     }
 
-    public void assertProcessFile(String filePath, String contentType) throws Exception {
-        Request request = new Request();
-        request.setMethod("GET");
-        request.setPath(filePath);
-
-        Response response = new Response(200);
-        response.setBody(readFile(filePath, 0));
-        response.setContentType(contentType);
-        response.setFileLength(response.getContentLength());
+    private void assertProcessReturns200Response(String filePath, String contentType) throws Exception {
+        Request request = createGetRequest(filePath);
+        Response response = create200Response(filePath, contentType);
 
         Assert.assertEquals(response, processor.process(request));
     }
 
-    private byte[] readFile(String path, int maxLength) throws Exception {
+    private Response create200Response(String filePath, String contentType) throws Exception {
+        Response response = new Response(200);
+        response.setBody(readFile(filePath, 0));
+        response.setContentType(contentType);
+        response.setFileLength(response.getContentLength());
+        return response;
+    }
 
-        File file = new File(PUBLIC_DIRECTORY + path);
+    private Request createGetRequest(String filePath) {
+        Request request = new Request();
+        request.setMethod(Method.GET);
+        request.setPath(filePath);
+        return request;
+    }
+
+    private byte[] readFile(String path, int maxLength) throws Exception {
+        File file = new File(DIRECTORY_PATH + path);
         long byteLength = (maxLength == 0) ? file.length() : maxLength;
         byte[] fileBytes = new byte[(int) byteLength];
 

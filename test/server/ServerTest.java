@@ -1,11 +1,8 @@
 package server;
 
 import junit.framework.Assert;
-import mocks.MockResponseWriter;
-import mocks.MockServerSocket;
 import mocks.MockSocket;
 import org.easymock.EasyMock;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
