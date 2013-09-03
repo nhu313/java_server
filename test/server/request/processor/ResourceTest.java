@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 
 public class ResourceTest {
     private static final String DIRECTORY_PATH = "./test/resource";
-
     private Processor processor;
 
     @Before

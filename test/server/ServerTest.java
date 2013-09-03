@@ -3,6 +3,7 @@ package server;
 import junit.framework.Assert;
 import mocks.MockSocket;
 import org.easymock.EasyMock;
+import org.junit.Before;
 import org.junit.Test;
 import server.request.processor.ProcessorFactory;
 
@@ -10,14 +11,20 @@ import java.io.IOException;
 import java.net.ServerSocket;
 
 public class ServerTest {
-    ProcessorFactory processorFactory = null;
+
+    private static final String HTTP_REQUEST = "GET /nonexistence HTTP/1.1";
+
+    @Before
+    public void setUp(){
+        System.setProperty(Config.DIRECTORY_PATH_KEY, "./test/resource");
+    }
 
     @Test
     public void testStart_whenSocketIsClosed(){
         ServerSocket serverSocket = getMockServerSocket(true);
         EasyMock.replay(serverSocket);
 
-        Server server = new Server(serverSocket, null, null, processorFactory);
+        Server server = new Server(serverSocket);
         server.start();
 
         EasyMock.verify(serverSocket);
@@ -25,47 +32,36 @@ public class ServerTest {
 
     @Test
     public void testStart_whenSocketIsOpened() throws IOException {
-        MockSocket socket = new MockSocket();
         ServerSocket serverSocket = getMockServerSocket(false, true);
+
+        MockSocket socket = new MockSocket();
         EasyMock.expect(serverSocket.accept()).andReturn(socket);
+        socket.setRequest(HTTP_REQUEST);
 
-        RequestParser parser = EasyMock.createMock(RequestParser.class);
-        Request request = new Request();
-        EasyMock.expect(parser.parse(socket.getInputStream())).andReturn(request);
-
-        Response response = new Response(ResponseCode.NOT_FOUND);
-        ResponseWriter writer = EasyMock.createMock(ResponseWriter.class);
-        writer.write(socket.getOutputStream(), response);
-        EasyMock.expectLastCall();
-
-        EasyMock.replay(serverSocket, parser, writer);
-
-        Server server = new Server(serverSocket, parser, writer, processorFactory);
+        EasyMock.replay(serverSocket);
+        Server server = new Server(serverSocket);
         server.start();
 
-        EasyMock.verify(serverSocket, parser, writer);
+        Assert.assertEquals("HTTP/1.1 404 Not Found\n", socket.getResponse());
+
+        EasyMock.verify(serverSocket);
     }
 
     @Test
     public void testStart_closeClientSocket() throws IOException {
-        MockSocket socket = new MockSocket();
         ServerSocket serverSocket = getMockServerSocket(false, true);
+
+        MockSocket socket = new MockSocket();
         EasyMock.expect(serverSocket.accept()).andReturn(socket);
+        socket.setRequest(HTTP_REQUEST);
 
-        Request request = new Request();
-        RequestParser parser = EasyMock.createMock(RequestParser.class);
-        EasyMock.expect(parser.parse(socket.getInputStream())).andReturn(request);
-
-        ResponseWriter writer = EasyMock.createNiceMock(ResponseWriter.class);
-
-        EasyMock.replay(serverSocket, parser, writer);
-
-        Server server = new Server(serverSocket, parser, writer, processorFactory);
+        EasyMock.replay(serverSocket);
+        Server server = new Server(serverSocket);
         server.start();
 
-        EasyMock.verify(serverSocket, parser, writer);
-
         Assert.assertTrue(socket.isClosed());
+
+        EasyMock.verify(serverSocket);
     }
 
     private ServerSocket getMockServerSocket(boolean... returnValues) {

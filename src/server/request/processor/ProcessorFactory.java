@@ -14,6 +14,10 @@ public class ProcessorFactory {
 
     private Map<String, Processor> processorsMapping = new ConcurrentHashMap<String, Processor>();
 
+    public ProcessorFactory(){
+        loadProcessorMapping();
+    }
+
     public void loadProcessorMapping(){
         addProcessorMappingFromDirectory();
         addProcessorMappingFromFile();

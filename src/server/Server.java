@@ -13,12 +13,11 @@ public class Server {
     private final ProcessorFactory processFactory;
     private ServerSocket serverSocket;
 
-    public Server(ServerSocket serverSocket, RequestParser requestParser,
-                  ResponseWriter writer, ProcessorFactory processorFactory) {
+    public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
-        this.requestParser = requestParser;
-        this.writer = writer;
-        this.processFactory = processorFactory;
+        this.requestParser = new RequestParser();
+        this.writer = new ResponseWriter();
+        this.processFactory = new ProcessorFactory();
     }
 
     public void start() {

@@ -14,7 +14,6 @@ public class ProcessorFactoryTest {
     public void setUp(){
         System.setProperty(Config.DIRECTORY_PATH_KEY, DIRECTORY_PATH);
         factory = new ProcessorFactory();
-        factory.loadProcessorMapping();
     }
 
     @Test
