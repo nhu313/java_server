@@ -24,10 +24,8 @@ public class Server {
         try {
             while(!serverSocket.isClosed()){
                 Socket clientSocket = serverSocket.accept();
-                Request request = requestParser.parse(clientSocket.getInputStream());
-                Response response = processFactory.get(request.getPath()).process(request);
-                writer.write(clientSocket.getOutputStream(), response);
-                clientSocket.close();
+                Thread runnable = new Thread(new MyThread(processFactory, clientSocket));
+                runnable.start();
             }
         } catch (IOException e) {
             e.printStackTrace();

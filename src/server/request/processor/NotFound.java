@@ -7,6 +7,7 @@ import server.ResponseCode;
 public class NotFound implements Processor{
     @Override
     public Response process(Request request) {
+        server.Logger.info(request.getMethod() + " " + request.getPath() + " HTTP/1.1");
         return new Response(ResponseCode.NOT_FOUND);
     }
 }

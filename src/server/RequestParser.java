@@ -24,7 +24,6 @@ public class RequestParser {
 
     private void setHeader(Request request, BufferedReader reader) throws IOException {
         String firstLine = reader.readLine();
-        server.Logger.info(firstLine);
         String[] values = firstLine.split(" ");
         request.setMethod(values[0]);
         setPathAndParams(request, values[1]);
@@ -98,7 +97,7 @@ public class RequestParser {
         Map<String, String> header = new HashMap<String, String>();
 
         String line = reader.readLine();
-        while (isEndOfSection(line)){
+        while (!isEndOfSection(line)){
             int index = line.indexOf(':');
             header.put(line.substring(0, index), line.substring(index + 1).trim());
             line = reader.readLine();
@@ -116,6 +115,6 @@ public class RequestParser {
     }
 
     private boolean isEndOfSection(String line){
-        return !(line == null || "".equals(line));
+        return (line == null || "".equals(line));
     }
 }
