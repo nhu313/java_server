@@ -18,6 +18,10 @@ public class LogsTest {
     @Test
     public void testProcess_withNoNoUsernameOrPassword(){
         Request request = new Request();
+        assertAuthenticationFailureResponse(request);
+    }
+
+    private void assertAuthenticationFailureResponse(Request request) {
         Response response = new Response(ResponseCode.AUTHENTICATION_FAIL);
         response.setBody("Authentication required");
         Assert.assertEquals(response, processor.process(request));
@@ -25,39 +29,32 @@ public class LogsTest {
 
     @Test
     public void testProcess_withWrongUsernameAndPassword(){
-        Request request = new Request();
-        request.setUsername("something");
-        request.setPassword("else");
-        Response response = new Response(ResponseCode.AUTHENTICATION_FAIL);
-        response.setBody("Authentication required");
-        Assert.assertEquals(response, processor.process(request));
+        Request request = createRequest("something", "else");
+        assertAuthenticationFailureResponse(request);
     }
 
     @Test
     public void testProcess_withWrongUsernameCorrectPassword(){
-        Request request = new Request();
-        request.setUsername("something");
-        request.setPassword(Config.LOG_PASSWORD);
-        Response response = new Response(ResponseCode.AUTHENTICATION_FAIL);
-        response.setBody("Authentication required");
-        Assert.assertEquals(response, processor.process(request));
+        Request request = createRequest("something", Config.LOG_PASSWORD);
+        assertAuthenticationFailureResponse(request);
     }
 
     @Test
     public void testProcess_withCorrectUsernameWrongPassword(){
-        Request request = new Request();
-        request.setUsername(Config.LOG_USERNAME);
-        request.setPassword("not a real password");
-        Response response = new Response(ResponseCode.AUTHENTICATION_FAIL);
-        response.setBody("Authentication required");
-        Assert.assertEquals(response, processor.process(request));
+        Request request = createRequest(Config.LOG_USERNAME, "not a real password");
+        assertAuthenticationFailureResponse(request);
+    }
+
+    private Request createRequest(String username, String password) {
+        Request request = new Request(Method.GET.name(), "/logs");
+        request.setUsername(username);
+        request.setPassword(password);
+        return request;
     }
 
     @Test
     public void testProcess_withCorrectUsernameAndPassword(){
-        Request request = new Request(Method.GET.name(), "/logs");
-        request.setUsername(Config.LOG_USERNAME);
-        request.setPassword(Config.LOG_PASSWORD);
+        Request request = createRequest(Config.LOG_USERNAME, Config.LOG_PASSWORD);
         Response response = processor.process(request);
         Assert.assertEquals(ResponseCode.OK, response.getCode());
         String body = new String(response.getBody());
