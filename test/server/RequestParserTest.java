@@ -4,9 +4,11 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.xml.bind.DatatypeConverter;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +18,7 @@ public class RequestParserTest {
 
     @Before
     public void setUp(){
+        System.setProperty(Config.DIRECTORY_PATH_KEY, "./test/resource");
         parser = new RequestParser();
     }
 
@@ -54,7 +57,6 @@ public class RequestParserTest {
         Map<String, String> params = new HashMap<String, String>();
         params.put("weird", "<>");
         assertParseRequestWithParam(params);
-
     }
 
     private void assertParseRequestWithParam(Map<String, String> params){
@@ -71,10 +73,29 @@ public class RequestParserTest {
     private String buildParamString(Map<String, String> params) {
         String paramsString = "?";
         for (Map.Entry<String, String> entry : params.entrySet()){
-            paramsString += entry.getKey() + "=" + URLEncoder.encode(entry.getValue()) + "&";
+            try {
+                paramsString += entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), Config.ENCODE) + "&";
+            } catch (UnsupportedEncodingException e) {
+
+            }
         }
         paramsString = paramsString.substring(0, paramsString.length() - 1);
         return paramsString;
+    }
+
+    @Test
+    public void testParseRequest_withAunthentication() throws IOException {
+        String username = "Aladdin";
+        String password = "open sesame";
+        String usernamePassword = username + ":" + password;
+        String requestString = "GET /logs HTTP/1.1\n" +
+                "Authorization: Basic " + DatatypeConverter.printBase64Binary(usernamePassword.getBytes());
+        InputStream input = new ByteArrayInputStream(requestString.getBytes());
+
+        Request request = new Request("GET", "/logs");
+        request.setUsername(username);
+        request.setPassword(password);
+        Assert.assertEquals(request, parser.parse(input));
     }
 
     @Test

@@ -4,16 +4,16 @@ import server.Config;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DirectoryReader {
 
     public static List<String> fileNames(){
+        String private_dir_name = Config.PRIVATE_PATH.substring(1);
         File dir = new File(Config.DIRECTORY_PATH);
         List<String> files = new ArrayList<String>();
         for (String fileName : dir.list()){
-            if (!Config.PRIVATE_PATH.equals(fileName)){
+            if (!private_dir_name.equals(fileName)){
                 files.add(fileName);
             }
         }

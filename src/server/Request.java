@@ -10,6 +10,9 @@ public class Request {
     private String host;
     private Map<String, String> params;
     private int maxContentSize;
+    private String authentication;
+    private String username;
+    private String password;
 
     public Request() {}
 
@@ -74,6 +77,22 @@ public class Request {
         return maxContentSize;
     }
 
+    public void setMethod(Method method) {
+        this.method = method;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,11 +101,16 @@ public class Request {
         Request request = (Request) o;
 
         if (contentLength != request.contentLength) return false;
+        if (maxContentSize != request.maxContentSize) return false;
+        if (authentication != null ? !authentication.equals(request.authentication) : request.authentication != null)
+            return false;
         if (body != null ? !body.equals(request.body) : request.body != null) return false;
         if (host != null ? !host.equals(request.host) : request.host != null) return false;
-        if (method != null ? !method.equals(request.method) : request.method != null) return false;
+        if (method != request.method) return false;
         if (params != null ? !params.equals(request.params) : request.params != null) return false;
+        if (password != null ? !password.equals(request.password) : request.password != null) return false;
         if (path != null ? !path.equals(request.path) : request.path != null) return false;
+        if (username != null ? !username.equals(request.username) : request.username != null) return false;
 
         return true;
     }
@@ -99,22 +123,30 @@ public class Request {
         result = 31 * result + contentLength;
         result = 31 * result + (host != null ? host.hashCode() : 0);
         result = 31 * result + (params != null ? params.hashCode() : 0);
+        result = 31 * result + maxContentSize;
+        result = 31 * result + (authentication != null ? authentication.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Request{" +
-                "method='" + method + '\'' +
+                "authentication='" + authentication + '\'' +
+                ", method=" + method +
                 ", path='" + path + '\'' +
                 ", body='" + body + '\'' +
                 ", contentLength=" + contentLength +
                 ", host='" + host + '\'' +
                 ", params=" + params +
+                ", maxContentSize=" + maxContentSize +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 
-    public void setMethod(Method method) {
-        this.method = method;
+    public String getUsername() {
+        return username;
     }
 }

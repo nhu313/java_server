@@ -8,7 +8,6 @@ import java.io.IOException;
 
 public class Resource implements Processor{
 
-
     @Override
     public Response process(Request request) {
         Response response = new Response();
@@ -18,7 +17,7 @@ public class Resource implements Processor{
                 setContentType(request.getPath(), response);
                 setCode(response);
             } catch (Exception e) {
-                //            e.printStackTrace();
+//                            e.printStackTrace();
                 response.setCode(ResponseCode.NOT_FOUND);
             }
         } else {

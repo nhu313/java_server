@@ -16,7 +16,7 @@ public class Test {
     }
 
 
-//    @org.junit.Test
+    @org.junit.Test
     public void testMethod(){
         byte[] bytes = DatatypeConverter.parseBase64Binary("QWxhZGRpbjpvcGVuIHNlc2FtZQ==");
         System.out.println(new String(bytes));

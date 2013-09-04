@@ -1,9 +1,7 @@
 package server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import javax.xml.bind.DatatypeConverter;
+import java.io.*;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,19 +23,36 @@ public class RequestParser {
     }
 
     private void setHeader(Request request, BufferedReader reader) throws IOException {
-        String[] values = reader.readLine().split(" ");
+        String firstLine = reader.readLine();
+        server.Logger.info(firstLine);
+        String[] values = firstLine.split(" ");
         request.setMethod(values[0]);
         setPathAndParams(request, values[1]);
 
         Map<String, String> header = getHeader(reader);
         request.setContentLength(getContentLength(header));
         request.setHost(header.get("Host"));
+        setMaxContentSize(request, header.get("Range"));
+        setAuthentication(request, header.get("Authorization"));
+    }
 
-        String range = header.get("Range");
+    private void setAuthentication(Request request, String authorization) {
+        if (authorization != null){
+            String header = "Basic ";
+            int start = authorization.indexOf(header) + header.length();
+            String base64Text = authorization.substring(start);
+            byte[] authenticationText = DatatypeConverter.parseBase64Binary(base64Text);
+            String[] values = new String(authenticationText).split(":");
+
+            request.setUsername(values[0]);
+            request.setPassword(values[1]);
+        }
+    }
+
+    private void setMaxContentSize(Request request, String range) {
         if (range != null){
-        String[] ra = range.split("-");
-
-        request.setMaxContentSize(Integer.parseInt(ra[1]));
+            String[] ra = range.split("-");
+            request.setMaxContentSize(Integer.parseInt(ra[1]));
         }
     }
 
@@ -58,21 +73,17 @@ public class RequestParser {
         String[] paramValues = value.split("&");
         for (String paramString : paramValues){
             String[] param = paramString.split("=");
-            params.put(param[0], URLDecoder.decode(param[1]));
+            try {
+                params.put(param[0], URLDecoder.decode(param[1], Config.ENCODE));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
         request.setParams(params);
     }
 
     private boolean hasParam(String path) {
         return path.contains("?");
-    }
-
-    private boolean getActiveValue(Map<String, String> header) {
-        String connection = header.get("Connection");
-        if ("keep-alive".equals(connection)){
-            return true;
-        }
-        return false;
     }
 
     private int getContentLength(Map<String, String> header) throws IOException {
