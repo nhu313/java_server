@@ -19,30 +19,30 @@ public class ProcessorFactoryTest {
     @Test
     public void testGetProcessorForFilePath(){
         Processor processor = factory.get("/file1");
-        Assert.assertTrue(processor instanceof Resource);
+        Assert.assertTrue(processor instanceof FileProcessor);
     }
 
     @Test
     public void testGetProcessorForImageFilePath(){
         Processor processor = factory.get("/image.gif");
-        Assert.assertTrue(processor instanceof Resource);
+        Assert.assertTrue(processor instanceof FileProcessor);
     }
 
     @Test
     public void testGetProcessorForPathThatDoesNotExist(){
         Processor processor = factory.get("/nonexistencepath");
-        Assert.assertTrue(processor instanceof NotFound);
+        Assert.assertTrue(processor instanceof NotFoundProcessor);
     }
 
     @Test
     public void testGetProcessorForPrivatePath(){
         Processor processor = factory.get("/private");
-        Assert.assertTrue(processor instanceof NotFound);
+        Assert.assertTrue(processor instanceof NotFoundProcessor);
     }
 
     @Test
     public void testGetProcessorForPathInRoute(){
-        Assert.assertTrue(factory.get("/") instanceof Index);
-        Assert.assertTrue(factory.get("/form") instanceof Form);
+        Assert.assertTrue(factory.get("/") instanceof IndexProcessor);
+        Assert.assertTrue(factory.get("/form") instanceof FormProcessor);
     }
 }

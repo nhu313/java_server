@@ -1,6 +1,6 @@
 PATH        : PROCESSOR
-/           : server.request.processor.Index
-/form       : server.request.processor.Form
-/redirect   : server.request.processor.Redirect
-/parameters : server.request.processor.Parameters
-/logs       : server.request.processor.Logs
+/           : server.request.processor.IndexProcessor
+/form       : server.request.processor.FormProcessor
+/redirect   : server.request.processor.RedirectProcessor
+/parameters : server.request.processor.ParametersProcessor
+/logs       : server.request.processor.LogsProcessor

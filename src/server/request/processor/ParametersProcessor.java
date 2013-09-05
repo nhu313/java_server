@@ -6,7 +6,7 @@ import server.ResponseCode;
 
 import java.util.Map;
 
-public class Parameters implements Processor{
+public class ParametersProcessor implements Processor{
 
 
     @Override

@@ -5,14 +5,14 @@ import server.request.processor.ProcessorFactory;
 import java.io.IOException;
 import java.net.Socket;
 
-public class MyThread implements Runnable {
+public class RequestHandler implements Runnable {
     private final ResponseWriter writer;
     private final RequestParser requestParser;
     private final ProcessorFactory processFactory;
     private Socket clientSocket;
 
 
-    public MyThread(ProcessorFactory processorFactory, Socket clientSocket){
+    public RequestHandler(ProcessorFactory processorFactory, Socket clientSocket){
         this.writer = new ResponseWriter();
         this.requestParser = new RequestParser();
         this.processFactory = processorFactory;
@@ -27,7 +27,7 @@ public class MyThread implements Runnable {
             writer.write(clientSocket.getOutputStream(), response);
             clientSocket.close();
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            //TODO Log error
         }
     }
 }

@@ -8,7 +8,7 @@ import server.Response;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ParametersTest {
+public class ParametersProcessorTest {
 
     @Test
     public void testProcess(){
@@ -19,7 +19,7 @@ public class ParametersTest {
         params.put("variable_2", "stuff");
         request.setParams(params);
 
-        Response response = new Parameters().process(request);
+        Response response = new ParametersProcessor().process(request);
         String responseBody = new String(response.getBody());
         Assert.assertTrue(responseBody.contains("variable_1 = Operators <, >, =, !=; +, -, *, &, @, #, $, [, ]: \"is that all\"?"));
         Assert.assertTrue(responseBody.contains("variable_2 = stuff"));

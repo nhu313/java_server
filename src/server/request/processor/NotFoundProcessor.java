@@ -4,7 +4,7 @@ import server.Request;
 import server.Response;
 import server.ResponseCode;
 
-public class NotFound implements Processor{
+public class NotFoundProcessor implements Processor{
     @Override
     public Response process(Request request) {
         server.Logger.info(request.getMethod() + " " + request.getPath() + " HTTP/1.1");

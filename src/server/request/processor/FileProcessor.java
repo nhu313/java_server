@@ -6,24 +6,27 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class Resource implements Processor{
+public class FileProcessor implements Processor{
 
     @Override
     public Response process(Request request) {
         Response response = new Response();
         if (Method.GET == request.getMethod()){
             try {
-                setBody(request, response);
-                setContentType(request.getPath(), response);
-                setCode(response);
-            } catch (Exception e) {
-//                            e.printStackTrace();
+                buildRequest(request, response);
+            } catch (IOException e) {
                 response.setCode(ResponseCode.NOT_FOUND);
             }
         } else {
             response.setCode(ResponseCode.METHOD_NOT_ALLOW);
         }
         return response;
+    }
+
+    private void buildRequest(Request request, Response response) throws IOException {
+        setBody(request, response);
+        setContentType(request.getPath(), response);
+        setCode(response);
     }
 
     private void setCode(Response response) {
@@ -35,11 +38,11 @@ public class Resource implements Processor{
     }
 
     private Response setBody(Request request, Response response) throws IOException {
-        String path = request.getPath();
-        File file = new File(Config.DIRECTORY_PATH + path);
-        byte[] buffer = getFileBytes(file, request.getMaxContentSize());
+        File file = new File(Config.DIRECTORY_PATH + request.getPath());
+        byte[] content = getFileContent(file, request.getMaxContentSize());
+
         response.setFileLength(file.length());
-        response.setBody(buffer);
+        response.setBody(content);
         return response;
     }
 
@@ -50,15 +53,22 @@ public class Resource implements Processor{
         }
     }
 
-    private byte[] getFileBytes(File file, int maxContentSize) throws IOException {
+    private byte[] getFileContent(File file, int maxContentSize) throws IOException {
+        int fileSize = getMaxContentSize(file, maxContentSize);
+
+        FileInputStream in = new FileInputStream(file);
+        byte[] content = new byte[(int) fileSize];
+        in.read(content, 0, fileSize);
+
+        in.close();
+        return content;
+    }
+
+    private int getMaxContentSize(File file, int maxContentSize) {
         int fileSize = (int)file.length();
         if (maxContentSize > 0 && maxContentSize < file.length()){
             fileSize = maxContentSize;
         }
-        FileInputStream in = new FileInputStream(file);
-        byte[] buffer = new byte[(int) fileSize];
-        in.read(buffer, 0, fileSize);
-        in.close();
-        return buffer;
+        return fileSize;
     }
 }

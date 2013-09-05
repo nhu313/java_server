@@ -5,14 +5,14 @@ import org.junit.Before;
 import org.junit.Test;
 import server.*;
 
-public class LogsTest {
+public class LogsProcessorTest {
 
     private Processor processor;
 
     @Before
     public void setUp(){
         System.setProperty(Config.DIRECTORY_PATH_KEY, "./test/resource");
-        processor = new Logs();
+        processor = new LogsProcessor();
     }
 
     @Test

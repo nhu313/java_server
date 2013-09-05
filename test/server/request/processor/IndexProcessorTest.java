@@ -5,12 +5,12 @@ import org.junit.Before;
 import org.junit.Test;
 import server.*;
 
-public class IndexTest {
+public class IndexProcessorTest {
     private Processor processor;
 
     @Before
     public void setUp(){
-        processor = new Index();
+        processor = new IndexProcessor();
     }
 
     @Test

@@ -8,7 +8,7 @@ import server.ResponseCode;
 import java.io.File;
 import java.io.IOException;
 
-public class Index implements Processor{
+public class IndexProcessor implements Processor{
 
     @Override
     public Response process(Request request) {

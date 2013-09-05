@@ -7,13 +7,13 @@ import server.Request;
 import server.Response;
 import server.ResponseCode;
 
-public class FormTest {
+public class FormProcessorTest {
 
     private Processor processor;
 
     @Before
     public void setUp(){
-        processor = new Form();
+        processor = new FormProcessor();
     }
 
     @Test

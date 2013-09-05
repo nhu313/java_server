@@ -5,17 +5,15 @@ import server.Request;
 import server.Response;
 import server.ResponseCode;
 
-import javax.xml.bind.DatatypeConverter;
-
-public class Logs implements Processor {
-    private static final Resource resourceProcessor = new Resource();
+public class LogsProcessor implements Processor {
+    private static final FileProcessor FILE_PROCESSOR_PROCESSOR = new FileProcessor();
 
     @Override
     public Response process(Request request) {
         if (authenticated(request)){
             String path = "/" + Config.PRIVATE_PATH + request.getPath();
             request.setPath(path);
-            return resourceProcessor.process(request);
+            return FILE_PROCESSOR_PROCESSOR.process(request);
         } else {
             Response response = new Response();
             response.setCode(ResponseCode.AUTHENTICATION_FAIL);

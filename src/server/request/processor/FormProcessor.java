@@ -5,7 +5,7 @@ import server.Request;
 import server.Response;
 import server.ResponseCode;
 
-public class Form implements Processor{
+public class FormProcessor implements Processor{
     private String value;
 
     @Override

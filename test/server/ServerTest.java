@@ -20,7 +20,7 @@ public class ServerTest {
     }
 
     @Test
-    public void testStart_whenSocketIsClosed(){
+    public void testStart_whenSocketIsClosed() throws IOException {
         ServerSocket serverSocket = getMockServerSocket(true);
         EasyMock.replay(serverSocket);
 

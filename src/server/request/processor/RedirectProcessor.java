@@ -4,7 +4,7 @@ import server.Request;
 import server.Response;
 import server.ResponseCode;
 
-public class Redirect implements Processor {
+public class RedirectProcessor implements Processor {
     @Override
     public Response process(Request request) {
         Response response = new Response(ResponseCode.MOVED);

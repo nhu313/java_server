@@ -1,6 +1,5 @@
 package server;
 
-import server.request.processor.Processor;
 import server.request.processor.ProcessorFactory;
 
 import java.io.IOException;
@@ -20,15 +19,11 @@ public class Server {
         this.processFactory = new ProcessorFactory();
     }
 
-    public void start() {
-        try {
-            while(!serverSocket.isClosed()){
-                Socket clientSocket = serverSocket.accept();
-                Thread runnable = new Thread(new MyThread(processFactory, clientSocket));
-                runnable.start();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void start() throws IOException {
+        while(!serverSocket.isClosed()){
+            Socket clientSocket = serverSocket.accept();
+            Thread runnable = new Thread(new RequestHandler(processFactory, clientSocket));
+            runnable.start();
         }
     }
 }

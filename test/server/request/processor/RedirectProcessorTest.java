@@ -6,12 +6,12 @@ import server.Request;
 import server.Response;
 import server.ResponseCode;
 
-public class RedirectTest {
+public class RedirectProcessorTest {
 
     @Test
     public void testProcess(){
         String host = "localhost:5000";
-        Processor processor = new Redirect();
+        Processor processor = new RedirectProcessor();
         Response response = new Response(ResponseCode.MOVED);
         response.addHeader("Location", "http://" + host + "/");
 

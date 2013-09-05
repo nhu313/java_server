@@ -10,7 +10,7 @@ import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ProcessorFactory {
-    private final static Processor DEFAULT_PROCESSOR = new NotFound();
+    private final static Processor DEFAULT_PROCESSOR = new NotFoundProcessor();
 
     private Map<String, Processor> processorsMapping = new ConcurrentHashMap<String, Processor>();
 
@@ -24,7 +24,7 @@ public class ProcessorFactory {
     }
 
     private void addProcessorMappingFromDirectory() {
-        Processor processor = new Resource();
+        Processor processor = new FileProcessor();
         List<String> fileNames = DirectoryReader.fileNames();
         for (String name  : fileNames){
             processorsMapping.put("/" + name, processor);
@@ -51,7 +51,6 @@ public class ProcessorFactory {
                 Processor processor = (Processor) Class.forName(values[1].trim()).newInstance();
                 processorsMapping.put(values[0].trim(), processor);
             }
-
         } catch (ClassNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (FileNotFoundException e) {

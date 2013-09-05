@@ -8,14 +8,14 @@ import server.*;
 import java.io.File;
 import java.io.FileInputStream;
 
-public class ResourceTest {
+public class FileProcessorTest {
     private static final String DIRECTORY_PATH = "./test/resource";
     private Processor processor;
 
     @Before
     public void setUp(){
         System.setProperty(Config.DIRECTORY_PATH_KEY, DIRECTORY_PATH);
-        processor = new Resource();
+        processor = new FileProcessor();
     }
 
     @Test
