@@ -6,15 +6,11 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class RequestHandler implements Runnable {
-    private final ResponseWriter writer;
-    private final RequestParser requestParser;
     private final ProcessorFactory processFactory;
     private final Socket clientSocket;
 
 
     public RequestHandler(ProcessorFactory processorFactory, Socket clientSocket){
-        this.writer = new ResponseWriter();
-        this.requestParser = new RequestParser();
         this.processFactory = processorFactory;
         this.clientSocket = clientSocket;
     }
@@ -41,9 +37,23 @@ public class RequestHandler implements Runnable {
     }
 
     private void handleRequest() throws IOException {
-        Request request = requestParser.parse(clientSocket.getInputStream());
-        Response response = processFactory.get(request.getPath()).process(request);
-        writer.write(clientSocket.getOutputStream(), response);
+        Request request = parseRequest();
+        Response response = processRequest(request);
+        writeRequest(response);
         clientSocket.close();
+    }
+
+    private Request parseRequest() throws IOException {
+        RequestParser requestParser = new RequestParser();
+        return requestParser.parse(clientSocket.getInputStream());
+    }
+
+    private Response processRequest(Request request) {
+        return processFactory.get(request.getPath()).process(request);
+    }
+
+    private void writeRequest(Response response) throws IOException {
+        ResponseWriter writer = new ResponseWriter();
+        writer.write(clientSocket.getOutputStream(), response);
     }
 }
