@@ -46,7 +46,7 @@ public class LogsProcessorTest {
     }
 
     private Request createRequest(String username, String password) {
-        Request request = new Request(Method.GET.name(), "/logs");
+        Request request = new Request(HttpMethod.GET.name(), "/logs");
         request.setUsername(username);
         request.setPassword(password);
         return request;

@@ -24,17 +24,17 @@ public class RequestParserTest {
 
     @Test
     public void parseGetIndexRequest(){
-        assertRequestDataIsSameAsInput(Method.GET, "/");
+        assertRequestDataIsSameAsInput(HttpMethod.GET, "/");
     }
 
     @Test
     public void parseGetSpecificPathRequest(){
-        assertRequestDataIsSameAsInput(Method.GET, "/board");
+        assertRequestDataIsSameAsInput(HttpMethod.GET, "/board");
     }
 
     @Test
     public void parseEmptyPostRequest(){
-        assertRequestDataIsSameAsInput(Method.POST, "/form");
+        assertRequestDataIsSameAsInput(HttpMethod.POST, "/form");
     }
 
     @Test
@@ -60,14 +60,14 @@ public class RequestParserTest {
     }
 
     private void assertParseRequestWithParam(Map<String, String> params){
-        Method method = Method.GET;
+        HttpMethod httpMethod = HttpMethod.GET;
         String simplePath = "/parameters";
 
         String path = simplePath + buildParamString(params);
 
-        Request expectedRequest = createHttpRequest(method, simplePath, null);
+        Request expectedRequest = createHttpRequest(httpMethod, simplePath, null);
         expectedRequest.setParams(params);
-        assertRequestDataIsSameAsInput(method, path, null, expectedRequest);
+        assertRequestDataIsSameAsInput(httpMethod, path, null, expectedRequest);
     }
 
     private String buildParamString(Map<String, String> params) {
@@ -101,7 +101,7 @@ public class RequestParserTest {
     @Test
     public void testParseRequest_withBody(){
         String textBody = "request body";
-        assertRequestDataIsSameAsInput(Method.POST, "/file", textBody);
+        assertRequestDataIsSameAsInput(HttpMethod.POST, "/file", textBody);
     }
 
     @Test
@@ -111,7 +111,7 @@ public class RequestParserTest {
                 "Will: He liked James Brown?\n" +
                 "Vivian: He even wore his hair like him.\n" +
                 "Will: [laughs] He had hair?";
-        assertRequestDataIsSameAsInput(Method.POST, "/file", textBody);
+        assertRequestDataIsSameAsInput(HttpMethod.POST, "/file", textBody);
     }
 
     @Test
@@ -134,17 +134,17 @@ public class RequestParserTest {
         Assert.assertEquals(request, parser.parse(input));
     }
 
-    private void assertRequestDataIsSameAsInput(Method method, String path) {
-        assertRequestDataIsSameAsInput(method, path, null);
+    private void assertRequestDataIsSameAsInput(HttpMethod httpMethod, String path) {
+        assertRequestDataIsSameAsInput(httpMethod, path, null);
     }
 
-    private void assertRequestDataIsSameAsInput(Method method, String path, String body) {
-        Request expectedRequest = createHttpRequest(method, path, body);
-        assertRequestDataIsSameAsInput(method, path, body, expectedRequest);
+    private void assertRequestDataIsSameAsInput(HttpMethod httpMethod, String path, String body) {
+        Request expectedRequest = createHttpRequest(httpMethod, path, body);
+        assertRequestDataIsSameAsInput(httpMethod, path, body, expectedRequest);
     }
 
-    private void assertRequestDataIsSameAsInput(Method method, String path, String body, Request expectedRequest) {
-        InputStream input = new ByteArrayInputStream(buildRequestString(method, path, body).getBytes());
+    private void assertRequestDataIsSameAsInput(HttpMethod httpMethod, String path, String body, Request expectedRequest) {
+        InputStream input = new ByteArrayInputStream(buildRequestString(httpMethod, path, body).getBytes());
         try {
             Assert.assertEquals(expectedRequest, parser.parse(input));
         } catch (IOException e) {
@@ -153,9 +153,9 @@ public class RequestParserTest {
         }
     }
 
-    private String buildRequestString(Method method, String path, String body) {
+    private String buildRequestString(HttpMethod httpMethod, String path, String body) {
         StringBuffer request = new StringBuffer();
-        request.append(method.name() + ' ' + path + " HTTP/1.1\n");
+        request.append(httpMethod.name() + ' ' + path + " HTTP/1.1\n");
         setBodyContent(body, request);
         return request.toString();
     }
@@ -172,9 +172,9 @@ public class RequestParserTest {
         return (body == null) ? 0 : body.length();
     }
 
-    private Request createHttpRequest(Method method, String path, String body) {
+    private Request createHttpRequest(HttpMethod httpMethod, String path, String body) {
         Request expectedRequest = new Request();
-        expectedRequest.setMethod(method);
+        expectedRequest.setMethod(httpMethod);
         expectedRequest.setPath(path);
         expectedRequest.setBody(body);
         expectedRequest.setContentLength(getContentLength(body));

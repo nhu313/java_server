@@ -25,7 +25,7 @@ public class RequestParser {
     private void setHeader(Request request, BufferedReader reader) throws IOException {
         String firstLine = reader.readLine();
         String[] values = firstLine.split(" ");
-        request.setMethod(values[0]);
+        request.setHttpMethod(values[0]);
         setPathAndParams(request, values[1]);
 
         Map<String, String> header = getHeader(reader);

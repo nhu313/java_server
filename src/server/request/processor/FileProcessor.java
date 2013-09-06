@@ -11,7 +11,7 @@ public class FileProcessor implements Processor{
     @Override
     public Response process(Request request) {
         Response response = new Response();
-        if (Method.GET == request.getMethod()){
+        if (HttpMethod.GET == request.getHttpMethod()){
             buildRequestAndHandleException(request, response);
         } else {
             response.setCode(ResponseCode.METHOD_NOT_ALLOW);

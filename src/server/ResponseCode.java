@@ -6,7 +6,7 @@ public enum ResponseCode {
     NOT_FOUND(404, "Not Found"),
     MOVED(301, "Moved Permanently"),
     PARTIAL_CONTENT(206, "Partial Content"),
-    METHOD_NOT_ALLOW(405, "Method not allowed");
+    METHOD_NOT_ALLOW(405, "HttpMethod not allowed");
 
     private final String description;
     private final int code;

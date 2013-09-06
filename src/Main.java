@@ -1,7 +1,6 @@
 import server.Config;
 import server.Server;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URISyntaxException;
@@ -35,11 +34,6 @@ public class Main {
     }
 
     public static String getResourcePath() throws URISyntaxException {
-//        String className = "resources";
-//        File file = new File(Main.class.getClassLoader().getResource(className).toURI());
-//        System.out.println("Does file exist" + file.exists());
-//        String classPath = Main.class.getClassLoader().getResource(className).getPath();
-//        String path = classPath.replace("file1", "");
         return "/Users/nhunguyen/Documents/server/Server/src/resources";
     }
 }

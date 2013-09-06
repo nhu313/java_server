@@ -1,5 +1,5 @@
 package server;
 
-public enum Method {
+public enum HttpMethod {
     GET, POST, PUT, HEAD;
 }

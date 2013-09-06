@@ -3,7 +3,7 @@ package server;
 import java.util.Map;
 
 public class Request {
-    private Method method;
+    private HttpMethod httpMethod;
     private String path;
     private String body;
     private int contentLength;
@@ -17,16 +17,16 @@ public class Request {
     public Request() {}
 
     public Request(String method, String path) {
-        this.method = Method.valueOf(method);
+        this.httpMethod = HttpMethod.valueOf(method);
         this.path = path;
     }
 
-    public Method getMethod() {
-        return method;
+    public HttpMethod getHttpMethod() {
+        return httpMethod;
     }
 
-    public void setMethod(String method) {
-        this.method = Method.valueOf(method);
+    public void setHttpMethod(String httpMethod) {
+        this.httpMethod = HttpMethod.valueOf(httpMethod);
     }
 
     public String getPath() {
@@ -77,8 +77,8 @@ public class Request {
         return maxContentSize;
     }
 
-    public void setMethod(Method method) {
-        this.method = method;
+    public void setMethod(HttpMethod httpMethod) {
+        this.httpMethod = httpMethod;
     }
 
     public void setUsername(String username) {
@@ -106,7 +106,7 @@ public class Request {
             return false;
         if (body != null ? !body.equals(request.body) : request.body != null) return false;
         if (host != null ? !host.equals(request.host) : request.host != null) return false;
-        if (method != request.method) return false;
+        if (httpMethod != request.httpMethod) return false;
         if (params != null ? !params.equals(request.params) : request.params != null) return false;
         if (password != null ? !password.equals(request.password) : request.password != null) return false;
         if (path != null ? !path.equals(request.path) : request.path != null) return false;
@@ -117,7 +117,7 @@ public class Request {
 
     @Override
     public int hashCode() {
-        int result = method != null ? method.hashCode() : 0;
+        int result = httpMethod != null ? httpMethod.hashCode() : 0;
         result = 31 * result + (path != null ? path.hashCode() : 0);
         result = 31 * result + (body != null ? body.hashCode() : 0);
         result = 31 * result + contentLength;
@@ -134,7 +134,7 @@ public class Request {
     public String toString() {
         return "Request{" +
                 "authentication='" + authentication + '\'' +
-                ", method=" + method +
+                ", httpMethod=" + httpMethod +
                 ", path='" + path + '\'' +
                 ", body='" + body + '\'' +
                 ", contentLength=" + contentLength +

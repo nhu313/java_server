@@ -21,7 +21,7 @@ public class FileProcessorTest {
     @Test
     public void testProcess_whenRequestMethodIsNotGet() throws Exception {
         Request request = new Request();
-        request.setMethod(Method.POST);
+        request.setMethod(HttpMethod.POST);
 
         Response response = new Response(ResponseCode.METHOD_NOT_ALLOW);
         Assert.assertEquals(response, processor.process(request));
@@ -88,7 +88,7 @@ public class FileProcessorTest {
 
     private Request createGetRequest(String filePath) {
         Request request = new Request();
-        request.setMethod(Method.GET);
+        request.setMethod(HttpMethod.GET);
         request.setPath(filePath);
         return request;
     }
