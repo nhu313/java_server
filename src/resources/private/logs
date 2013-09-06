@@ -742,3 +742,11 @@ INFO: GET /log HTTP/1.1
 INFO: PUT /these HTTP/1.1
 INFO: HEAD /requests HTTP/1.1
 INFO: GET /foobar HTTP/1.1
+INFO: GET /log HTTP/1.1
+INFO: PUT /these HTTP/1.1
+INFO: HEAD /requests HTTP/1.1
+INFO: GET /foobar HTTP/1.1
+INFO: GET /log HTTP/1.1
+INFO: PUT /these HTTP/1.1
+INFO: HEAD /requests HTTP/1.1
+INFO: GET /foobar HTTP/1.1

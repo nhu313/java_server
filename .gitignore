@@ -1,5 +1,5 @@
 .idea
 build/*
 out/*
-resource/private/logs
+src/resource/private/logs
 test/resource/private/logs
