@@ -48,7 +48,7 @@ public class Logger {
         }
     }
 
-    public static PrintWriter getWriter() {
+    private static PrintWriter getWriter() {
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(new FileWriter(new File(Config.LOG_PATH), true));
