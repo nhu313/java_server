@@ -13,7 +13,6 @@ public class Logger {
     }
 
     public static void error(String message, Exception e) {
-        e.printStackTrace();
         log(Type.ERROR, message);
 
         PrintWriter writer = getWriter();

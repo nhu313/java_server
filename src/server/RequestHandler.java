@@ -18,21 +18,29 @@ public class RequestHandler implements Runnable {
     @Override
     public void run() {
         try {
-            Request request = parseRequest();
-            Response response = processRequest(request);
-            writeRequest(response);
-            clientSocket.close();
+            handleRequest();
         } catch (IOException e) {
             Logger.error("Cannot handle request because " + e.getMessage(), e);
         } finally {
-            if (clientSocket != null){
-                try {
-                    clientSocket.close();
-                } catch (IOException e) {
-                    Logger.error("Cannot close socket because " + e.getMessage(), e);
-                }
+            closeSocket();
+        }
+    }
+
+    private void closeSocket() {
+        if (clientSocket != null){
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                Logger.error("Cannot close socket because " + e.getMessage(), e);
             }
         }
+    }
+
+    private void handleRequest() throws IOException {
+        Request request = parseRequest();
+        Response response = processRequest(request);
+        writeRequest(response);
+        clientSocket.close();
     }
 
     private Request parseRequest() throws IOException {
