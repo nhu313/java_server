@@ -11,15 +11,23 @@ public class LogsProcessor implements Processor {
     @Override
     public Response process(Request request) {
         if (authenticated(request)){
-            String path = "/" + Config.PRIVATE_PATH + request.getPath();
-            request.setPath(path);
-            return FILE_PROCESSOR_PROCESSOR.process(request);
+            return createAuthenticatedResponse(request);
         } else {
-            Response response = new Response();
-            response.setCode(ResponseCode.AUTHENTICATION_FAIL);
-            response.setBody("Authentication required");
-            return response;
+            return createFailedAuthenticationResponse();
         }
+    }
+
+    private Response createAuthenticatedResponse(Request request) {
+        String path = "/" + Config.PRIVATE_PATH + request.getPath();
+        request.setPath(path);
+        return FILE_PROCESSOR_PROCESSOR.process(request);
+    }
+
+    private Response createFailedAuthenticationResponse() {
+        Response response = new Response();
+        response.setCode(ResponseCode.AUTHENTICATION_FAIL);
+        response.setBody("Authentication required");
+        return response;
     }
 
     private boolean authenticated(Request request) {

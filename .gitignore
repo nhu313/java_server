@@ -3,4 +3,3 @@ build/*
 out/*
 resource/private/logs
 test/resource/private/logs
-test/server/Test.java

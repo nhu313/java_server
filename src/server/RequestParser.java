@@ -70,15 +70,23 @@ public class RequestParser {
     private void setParams(Request request, String value) {
         Map<String, String> params = new HashMap<String, String>();
         String[] paramValues = value.split("&");
+
         for (String paramString : paramValues){
             String[] param = paramString.split("=");
-            try {
-                params.put(param[0], URLDecoder.decode(param[1], Config.ENCODE));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
+            params.put(param[0], getDecodedParam(param[1]));
         }
+
         request.setParams(params);
+    }
+
+    private String getDecodedParam(String param) {
+        String decodedParam = null;
+        try {
+            decodedParam = URLDecoder.decode(param, Config.ENCODE);
+        } catch (UnsupportedEncodingException e) {
+            Logger.error("Cannot decode parameter" + param, e);
+        }
+        return decodedParam;
     }
 
     private boolean hasParam(String path) {

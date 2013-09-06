@@ -9,7 +9,7 @@ public class RequestHandler implements Runnable {
     private final ResponseWriter writer;
     private final RequestParser requestParser;
     private final ProcessorFactory processFactory;
-    private Socket clientSocket;
+    private final Socket clientSocket;
 
 
     public RequestHandler(ProcessorFactory processorFactory, Socket clientSocket){
@@ -22,12 +22,28 @@ public class RequestHandler implements Runnable {
     @Override
     public void run() {
         try {
-            Request request = requestParser.parse(clientSocket.getInputStream());
-            Response response = processFactory.get(request.getPath()).process(request);
-            writer.write(clientSocket.getOutputStream(), response);
-            clientSocket.close();
+            handleRequest();
         } catch (IOException e) {
-            //TODO Log error
+            Logger.error("Cannot handle request because " + e.getMessage(), e);
+        } finally {
+            closeSocket();
         }
+    }
+
+    private void closeSocket() {
+        if (clientSocket != null){
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                Logger.error("Cannot close socket because " + e.getMessage(), e);
+            }
+        }
+    }
+
+    private void handleRequest() throws IOException {
+        Request request = requestParser.parse(clientSocket.getInputStream());
+        Response response = processFactory.get(request.getPath()).process(request);
+        writer.write(clientSocket.getOutputStream(), response);
+        clientSocket.close();
     }
 }

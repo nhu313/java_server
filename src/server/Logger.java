@@ -7,26 +7,39 @@ public class Logger {
     private enum Type{
         INFO, ERROR;
     }
-    //TODO FIX THIS
+
     public static void info(String message) {
+        log(Type.INFO, message);
+    }
+
+    public static void error(String message, Exception e) {
+        e.printStackTrace();
+        log(Type.ERROR, message);
+
+        PrintWriter writer = getWriter();
+        e.printStackTrace(writer);
+        closeWriter(writer);
+    }
+
+    private static void log(Type type, String message) {
         Writer writer = null;
         try {
-            writer = writeMessage(Type.INFO, message);
+            writer = writeMessage(type, message);
         } catch (IOException e) {
-            System.out.println("Unable to open log file.");
+            System.out.println("Unable to write message");
             e.printStackTrace();
         } finally {
-            closeFile(writer);
+            closeWriter(writer);
         }
     }
 
     private static Writer writeMessage(Type type, String message) throws IOException {
         Writer writer = getWriter();
-        writer.write(type.name() + ": " + message + "\n");
+        writer.append(type.name() + ": " + message + "\n");
         return writer;
     }
 
-    private static void closeFile(Writer writer) {
+    private static void closeWriter(Writer writer) {
         try {
             if (writer != null){
                 writer.close();
@@ -36,7 +49,19 @@ public class Logger {
         }
     }
 
-    public static Writer getWriter() throws IOException {
-        return new FileWriter(Config.LOG_PATH, true);
+    public static PrintWriter getWriter() {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(new FileWriter(new File(Config.LOG_PATH), true));
+        } catch (IOException e) {
+            handleException(e);
+            writer = new PrintWriter(System.out);
+        }
+        return writer;
+    }
+
+    private static void handleException(IOException e) {
+        System.out.println("Unable to open log file.");
+        e.printStackTrace();
     }
 }

@@ -11,9 +11,10 @@ public class RedirectProcessorTest {
     @Test
     public void testProcess(){
         String host = "localhost:5000";
-        Processor processor = new RedirectProcessor();
         Response response = new Response(ResponseCode.MOVED);
         response.addHeader("Location", "http://" + host + "/");
+
+        Processor processor = new RedirectProcessor();
 
         Request request = new Request("GET", "/redirect");
         request.setHost(host);

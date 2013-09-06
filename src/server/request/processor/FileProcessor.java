@@ -12,15 +12,19 @@ public class FileProcessor implements Processor{
     public Response process(Request request) {
         Response response = new Response();
         if (Method.GET == request.getMethod()){
-            try {
-                buildRequest(request, response);
-            } catch (IOException e) {
-                response.setCode(ResponseCode.NOT_FOUND);
-            }
+            buildRequestAndHandleException(request, response);
         } else {
             response.setCode(ResponseCode.METHOD_NOT_ALLOW);
         }
         return response;
+    }
+
+    private void buildRequestAndHandleException(Request request, Response response) {
+        try {
+            buildRequest(request, response);
+        } catch (IOException e) {
+            response.setCode(ResponseCode.NOT_FOUND);
+        }
     }
 
     private void buildRequest(Request request, Response response) throws IOException {

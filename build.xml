@@ -6,6 +6,9 @@
     <target name="compile">
         <mkdir dir="build/classes"/>
         <javac srcdir="src" destdir="build/classes"/>
+        <copy todir="build/classes/resources">
+            <fileset dir="src/resources" includes="*" />
+        </copy>
     </target>
 
     <target name="build_jar">
