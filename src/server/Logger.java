@@ -26,7 +26,7 @@ public class Logger {
         try {
             writer = writeMessage(type, message);
         } catch (IOException e) {
-            System.out.println("Unable to write message");
+            System.err.println("Unable to write message");
             e.printStackTrace();
         } finally {
             closeWriter(writer);
@@ -45,7 +45,7 @@ public class Logger {
                 writer.close();
             }
         } catch (IOException e) {
-            System.out.println("Unable to close log file.");
+            System.err.println("Unable to close log file.");
         }
     }
 
@@ -61,7 +61,7 @@ public class Logger {
     }
 
     private static void handleException(IOException e) {
-        System.out.println("Unable to open log file.");
+        System.err.println("Unable to open log file.");
         e.printStackTrace();
     }
 }

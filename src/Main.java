@@ -28,7 +28,7 @@ public class Main {
     }
 
     private static void handleException(Exception e) {
-        System.out.println("Failed to start the server.");
+        System.err.println("Failed to start the server.");
         e.printStackTrace();
         System.exit(1);
     }
