@@ -18,7 +18,6 @@ public class RequestParserTest {
 
     @Before
     public void setUp(){
-        System.setProperty(Config.DIRECTORY_PATH_KEY, "./test/resource");
         parser = new RequestParser();
     }
 

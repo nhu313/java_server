@@ -6,13 +6,12 @@ import server.Response;
 import server.ResponseCode;
 
 import java.io.File;
-import java.io.IOException;
 
 public class IndexProcessor implements Processor{
 
     @Override
     public Response process(Request request) {
-        File directory = new File(Config.DIRECTORY_PATH);
+        File directory = new File(Config.PUBLIC_DIRECTORY);
         File[] contents = directory.listFiles();
         Response response = new Response(ResponseCode.OK);
         response.setBody(buildBody(contents));
@@ -22,7 +21,7 @@ public class IndexProcessor implements Processor{
     private String buildBody(File[] contents) {
         StringBuilder fileList = new StringBuilder();
         fileList.append("<ul>");
-        for (String fileName : DirectoryReader.fileNames()){
+        for (String fileName : FileFactory.getPublicFileNames()){
             fileList.append("<li><a href=\"/" + fileName + "\">" + fileName + "</a></li>");
         }
         fileList.append("</ul>");

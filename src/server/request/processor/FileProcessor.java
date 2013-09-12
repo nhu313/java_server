@@ -5,6 +5,7 @@ import server.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class FileProcessor implements Processor{
 
@@ -22,12 +23,12 @@ public class FileProcessor implements Processor{
     private void buildRequestAndHandleException(Request request, Response response) {
         try {
             buildRequest(request, response);
-        } catch (IOException e) {
+        } catch (Exception e) {
             response.setCode(ResponseCode.NOT_FOUND);
         }
     }
 
-    private void buildRequest(Request request, Response response) throws IOException {
+    private void buildRequest(Request request, Response response) throws IOException, URISyntaxException {
         setBody(request, response);
         setContentType(request.getPath(), response);
         setCode(response);
@@ -41,13 +42,26 @@ public class FileProcessor implements Processor{
         }
     }
 
-    private Response setBody(Request request, Response response) throws IOException {
-        File file = new File(Config.DIRECTORY_PATH + request.getPath());
+    private Response setBody(Request request, Response response) throws IOException, URISyntaxException {
+        File file = FileFactory.getFile(getFullPath(request));
         byte[] content = getFileContent(file, request.getMaxContentSize());
 
         response.setFileLength(file.length());
         response.setBody(content);
         return response;
+    }
+
+    private String getFullPath(Request request) {
+        String path = request.getPath();
+        if (isFullPath(path)){
+            return path;
+        } else {
+            return Config.PUBLIC_DIRECTORY + path;
+        }
+    }
+
+    private boolean isFullPath(String path) {
+        return path.contains(Config.ROOT_DIRECTORY);
     }
 
     private void setContentType(String path, Response response) {

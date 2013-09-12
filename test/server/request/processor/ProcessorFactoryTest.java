@@ -6,13 +6,11 @@ import org.junit.Test;
 import server.Config;
 
 public class ProcessorFactoryTest {
-    private static final String DIRECTORY_PATH = "./test/resource";
 
     private ProcessorFactory factory;
 
     @Before
     public void setUp(){
-        System.setProperty(Config.DIRECTORY_PATH_KEY, DIRECTORY_PATH);
         factory = new ProcessorFactory();
     }
 

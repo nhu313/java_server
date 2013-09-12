@@ -2,4 +2,4 @@
 build/*
 out/*
 src/resources/private/logs
-test/resource/private/logs
+test/resources/private/logs

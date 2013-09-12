@@ -1,24 +1,14 @@
 package server;
 
-import junit.framework.Assert;
-import mocks.MockSocket;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
-import server.request.processor.ProcessorFactory;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 
 public class ServerTest {
-
-    private static final String HTTP_REQUEST = "GET /nonexistence HTTP/1.1";
-
-    @Before
-    public void setUp(){
-        System.setProperty(Config.DIRECTORY_PATH_KEY, "./test/resource");
-    }
 
     @Test
     public void testStart_whenSocketIsClosed() throws IOException {

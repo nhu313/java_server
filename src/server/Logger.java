@@ -1,6 +1,9 @@
 package server;
 
+import server.request.processor.FileFactory;
+
 import java.io.*;
+import java.net.URISyntaxException;
 
 public class Logger {
 
@@ -51,15 +54,15 @@ public class Logger {
     private static PrintWriter getWriter() {
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(new FileWriter(new File(Config.LOG_PATH), true));
-        } catch (IOException e) {
+            writer = new PrintWriter(new FileWriter(FileFactory.getFile(Config.LOG_PATH), true));
+        } catch (Exception e) {
             handleException(e);
             writer = new PrintWriter(System.out);
         }
         return writer;
     }
 
-    private static void handleException(IOException e) {
+    private static void handleException(Exception e) {
         System.err.println("Unable to open log file.");
         e.printStackTrace();
     }

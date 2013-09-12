@@ -18,8 +18,7 @@ public class LogsProcessor implements Processor {
     }
 
     private Response createAuthenticatedResponse(Request request) {
-        String path = "/" + Config.PRIVATE_PATH + request.getPath();
-        request.setPath(path);
+        request.setPath(Config.LOG_PATH);
         return FILE_PROCESSOR_PROCESSOR.process(request);
     }
 

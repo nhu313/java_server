@@ -2,9 +2,8 @@ package server.request.processor;
 
 import server.Config;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,15 +17,14 @@ public class ProcessorFactory {
         loadProcessorMapping();
     }
 
-    public void loadProcessorMapping(){
+    public void loadProcessorMapping() {
         addProcessorMappingFromDirectory();
         addProcessors();
     }
 
     private void addProcessorMappingFromDirectory() {
         Processor processor = new FileProcessor();
-        List<String> fileNames = DirectoryReader.fileNames();
-        for (String name  : fileNames){
+        for (String name  : FileFactory.getPublicFileNames()){
             processorsMapping.put("/" + name, processor);
         }
     }
@@ -35,14 +33,12 @@ public class ProcessorFactory {
         try {
             loadAndAddProcessor();
         } catch (Exception e) {
-            //If reading or loading the classes failed, the server cannot behave correctly.
-            //TODO ...........is this right?
             throw new RuntimeException(e);
         }
     }
 
-    private void loadAndAddProcessor() throws FileNotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-        Scanner scanner = new Scanner(new File(Config.ROUTE_PATH));
+    private void loadAndAddProcessor() throws FileNotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException, URISyntaxException {
+        Scanner scanner = new Scanner(FileFactory.getFile(Config.ROUTE_PATH));
         skipHeader(scanner);
         while (scanner.hasNextLine()){
             String line = scanner.nextLine();

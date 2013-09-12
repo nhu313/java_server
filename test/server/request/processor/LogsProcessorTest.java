@@ -7,11 +7,10 @@ import server.*;
 
 public class LogsProcessorTest {
 
-    private Processor processor;
+    private LogsProcessor processor;
 
     @Before
     public void setUp(){
-        System.setProperty(Config.DIRECTORY_PATH_KEY, "./test/resource");
         processor = new LogsProcessor();
     }
 

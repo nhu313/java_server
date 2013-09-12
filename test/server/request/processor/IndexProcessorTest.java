@@ -15,7 +15,6 @@ public class IndexProcessorTest {
 
     @Test
     public void testProcess(){
-        System.setProperty(Config.DIRECTORY_PATH_KEY, "./test/resource");
         Request request = new Request(HttpMethod.GET.name(), "/");
 
         Response response = new Response(ResponseCode.OK);

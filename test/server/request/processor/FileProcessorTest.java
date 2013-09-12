@@ -9,12 +9,11 @@ import java.io.File;
 import java.io.FileInputStream;
 
 public class FileProcessorTest {
-    private static final String DIRECTORY_PATH = "./test/resource";
-    private Processor processor;
+    private static final String DIRECTORY_PATH = "./test/resources";
+    private FileProcessor processor;
 
     @Before
     public void setUp(){
-        System.setProperty(Config.DIRECTORY_PATH_KEY, DIRECTORY_PATH);
         processor = new FileProcessor();
     }
 
@@ -47,7 +46,7 @@ public class FileProcessorTest {
     }
 
     private Response createPartialResponse(String path, int maxLength) throws Exception {
-        File file = new File(DIRECTORY_PATH + path);
+        File file = FileFactory.getFile(Config.PUBLIC_DIRECTORY + path);
 
         Response response = new Response(ResponseCode.PARTIAL_CONTENT);
         response.setFileLength(file.length());
@@ -94,7 +93,7 @@ public class FileProcessorTest {
     }
 
     private byte[] readFile(String path, int maxLength) throws Exception {
-        File file = new File(DIRECTORY_PATH + path);
+        File file = FileFactory.getFile(Config.PUBLIC_DIRECTORY + path);
         long byteLength = (maxLength == 0) ? file.length() : maxLength;
         byte[] fileBytes = new byte[(int) byteLength];
 

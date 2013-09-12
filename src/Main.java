@@ -1,4 +1,3 @@
-import server.Config;
 import server.Server;
 
 import java.io.IOException;
@@ -18,8 +17,6 @@ public class Main {
     }
 
     private static void startServer() throws IOException, URISyntaxException {
-        System.setProperty(Config.DIRECTORY_PATH_KEY, getResourcePath());
-
         ServerSocket serverSocket = new ServerSocket(5000);
         ExecutorService threadPool = Executors.newCachedThreadPool();
         Server server = new Server(serverSocket, threadPool);
@@ -31,9 +28,5 @@ public class Main {
         System.err.println("Failed to start the server.");
         e.printStackTrace();
         System.exit(1);
-    }
-
-    public static String getResourcePath() throws URISyntaxException {
-        return "/Users/nhunguyen/Documents/server/Server/src/resources";
     }
 }
