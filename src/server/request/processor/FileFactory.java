@@ -5,8 +5,6 @@ import server.Config;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FileFactory {
 

@@ -30,11 +30,11 @@ public class ProcessorFactory {
     }
 
     private void addProcessors() {
-        try {
-            loadAndAddProcessor();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        processorsMapping.put("/", new IndexProcessor());
+        processorsMapping.put("/form", new FormProcessor());
+        processorsMapping.put("/redirect", new RedirectProcessor());
+        processorsMapping.put("/parameters", new ParametersProcessor());
+        processorsMapping.put("/logs", new LogsProcessor());
     }
 
     private void loadAndAddProcessor() throws FileNotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException, URISyntaxException {
