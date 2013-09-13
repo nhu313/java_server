@@ -43,25 +43,12 @@ public class FileProcessor implements Processor{
     }
 
     private Response setBody(Request request, Response response) throws IOException, URISyntaxException {
-        File file = FileFactory.getFile(getFullPath(request));
+        File file = FileFactory.getFile(request.getPath());
         byte[] content = getFileContent(file, request.getMaxContentSize());
 
         response.setFileLength(file.length());
         response.setBody(content);
         return response;
-    }
-
-    private String getFullPath(Request request) {
-        String path = request.getPath();
-        if (isFullPath(path)){
-            return path;
-        } else {
-            return Config.PUBLIC_DIRECTORY + path;
-        }
-    }
-
-    private boolean isFullPath(String path) {
-        return path.contains(Config.ROOT_DIRECTORY);
     }
 
     private void setContentType(String path, Response response) {

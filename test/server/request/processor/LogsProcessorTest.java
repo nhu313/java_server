@@ -56,7 +56,5 @@ public class LogsProcessorTest {
         Request request = createRequest(Config.LOG_USERNAME, Config.LOG_PASSWORD);
         Response response = processor.process(request);
         Assert.assertEquals(ResponseCode.OK, response.getCode());
-        String body = new String(response.getBody());
-        Assert.assertTrue(body.contains("log file"));
     }
 }

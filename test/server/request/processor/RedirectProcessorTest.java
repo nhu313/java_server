@@ -2,6 +2,7 @@ package server.request.processor;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import server.Processor;
 import server.Request;
 import server.Response;
 import server.ResponseCode;

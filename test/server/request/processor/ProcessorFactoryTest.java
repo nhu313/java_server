@@ -3,7 +3,7 @@ package server.request.processor;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import server.Config;
+import server.Processor;
 
 public class ProcessorFactoryTest {
 

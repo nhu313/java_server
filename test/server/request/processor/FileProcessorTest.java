@@ -46,7 +46,7 @@ public class FileProcessorTest {
     }
 
     private Response createPartialResponse(String path, int maxLength) throws Exception {
-        File file = FileFactory.getFile(Config.PUBLIC_DIRECTORY + path);
+        File file = FileFactory.getFile(path);
 
         Response response = new Response(ResponseCode.PARTIAL_CONTENT);
         response.setFileLength(file.length());
@@ -93,7 +93,7 @@ public class FileProcessorTest {
     }
 
     private byte[] readFile(String path, int maxLength) throws Exception {
-        File file = FileFactory.getFile(Config.PUBLIC_DIRECTORY + path);
+        File file = FileFactory.getFile(path);
         long byteLength = (maxLength == 0) ? file.length() : maxLength;
         byte[] fileBytes = new byte[(int) byteLength];
 

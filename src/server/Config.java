@@ -1,12 +1,17 @@
 package server;
 
 public class Config {
-    public static final String ROOT_DIRECTORY = "/resources";
+    public static final String PUBLIC_DIRECTORY = getRootDirectory();
 
-    public static final String PUBLIC_DIRECTORY = ROOT_DIRECTORY + "/public";
-    public static final String PRIVATE_PATH = ROOT_DIRECTORY + "/private";
-    public static final String ROUTE_PATH = PRIVATE_PATH + "/processor_locator.txt";
-    public static final String LOG_PATH = PRIVATE_PATH + "/logs";
+    private static String getRootDirectory() {
+        String directory = System.getProperty("root_directory");
+        if (directory == null) {
+            directory = Config.class.getResource("/resources").getPath();
+        }
+        return directory;
+    }
+
+    public static final String LOG_PATH = "/logs";
     public static final String LOG_USERNAME = "admin";
     public static final String LOG_PASSWORD = "hunter2";
 

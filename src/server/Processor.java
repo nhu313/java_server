@@ -1,4 +1,4 @@
-package server.request.processor;
+package server;
 
 import server.Request;
 import server.Response;

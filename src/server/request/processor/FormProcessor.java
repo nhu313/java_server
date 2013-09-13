@@ -1,11 +1,8 @@
 package server.request.processor;
 
-import server.HttpMethod;
-import server.Request;
-import server.Response;
-import server.ResponseCode;
+import server.*;
 
-public class FormProcessor implements Processor{
+public class FormProcessor implements Processor {
     private String value;
 
     @Override

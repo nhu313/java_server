@@ -2,10 +2,8 @@ package server;
 
 import server.request.processor.FileFactory;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
+import java.io.*;
+import java.net.URISyntaxException;
 
 public class Logger {
 
@@ -56,12 +54,20 @@ public class Logger {
     private static PrintWriter getWriter() {
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(new FileWriter(FileFactory.getFile(Config.LOG_PATH), true));
+            writer = new PrintWriter(new FileWriter(getLogFile(), true));
         } catch (Exception e) {
             handleException(e);
             writer = new PrintWriter(System.out);
         }
         return writer;
+    }
+
+    private static File getLogFile() throws URISyntaxException, IOException {
+        File file = FileFactory.getFile(Config.LOG_PATH);
+        if (!file.exists()){
+            file.createNewFile();
+        }
+        return file;
     }
 
     private static void handleException(Exception e) {

@@ -1,11 +1,8 @@
 package server.request.processor;
 
-import server.Logger;
-import server.Request;
-import server.Response;
-import server.ResponseCode;
+import server.*;
 
-public class NotFoundProcessor implements Processor{
+public class NotFoundProcessor implements Processor {
     @Override
     public Response process(Request request) {
         Logger.info(request.getHttpMethod() + " " + request.getPath() + " HTTP/1.1");

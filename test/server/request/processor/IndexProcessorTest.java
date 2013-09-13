@@ -28,6 +28,7 @@ public class IndexProcessorTest {
         body.append("<ul>");
         body.append("<li><a href=\"/file1\">file1</a></li>");
         body.append("<li><a href=\"/image.gif\">image.gif</a></li>");
+        body.append("<li><a href=\"/logs\">logs</a></li>");
         body.append("</ul>");
         return body.toString();
     }

@@ -1,12 +1,13 @@
 package server.request.processor;
 
+import server.Processor;
 import server.Request;
 import server.Response;
 import server.ResponseCode;
 
 import java.util.Map;
 
-public class ParametersProcessor implements Processor{
+public class ParametersProcessor implements Processor {
 
 
     @Override

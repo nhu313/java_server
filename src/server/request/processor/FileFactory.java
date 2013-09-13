@@ -3,21 +3,14 @@ package server.request.processor;
 import server.Config;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 public class FileFactory {
 
     public static String[] getPublicFileNames() {
-        try {
-            return getFile(Config.PUBLIC_DIRECTORY).list();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        return getFile("").list();
     }
 
-    public static File getFile(String path) throws URISyntaxException {
-        URL url = Config.class.getResource(path);
-        return new File(url.toURI());
+    public static File getFile(String path) {
+        return new File(Config.PUBLIC_DIRECTORY + path);
     }
 }

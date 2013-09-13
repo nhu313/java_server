@@ -1,24 +1,19 @@
 package server.request.processor;
 
-import server.Config;
-import server.Request;
-import server.Response;
-import server.ResponseCode;
+import server.*;
 
 import java.io.File;
 
-public class IndexProcessor implements Processor{
+public class IndexProcessor implements Processor {
 
     @Override
     public Response process(Request request) {
-        File directory = new File(Config.PUBLIC_DIRECTORY);
-        File[] contents = directory.listFiles();
         Response response = new Response(ResponseCode.OK);
-        response.setBody(buildBody(contents));
+        response.setBody(buildBody());
         return response;
     }
 
-    private String buildBody(File[] contents) {
+    private String buildBody() {
         StringBuilder fileList = new StringBuilder();
         fileList.append("<ul>");
         for (String fileName : FileFactory.getPublicFileNames()){

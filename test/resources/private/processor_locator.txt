@@ -1,4 +1,0 @@
-PATH        :   PROCESSOR
-/           :   server.request.processor.IndexProcessor
-/logs       :   server.request.processor.LogsProcessor
-/form       :   server.request.processor.FormProcessor

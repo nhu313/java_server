@@ -1,9 +1,6 @@
 package server.request.processor;
 
-import server.Config;
-import server.Request;
-import server.Response;
-import server.ResponseCode;
+import server.*;
 
 public class LogsProcessor implements Processor {
     private static final FileProcessor FILE_PROCESSOR_PROCESSOR = new FileProcessor();
