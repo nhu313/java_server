@@ -4,7 +4,7 @@ public class Config {
     public static final String PUBLIC_DIRECTORY = getRootDirectory();
 
     private static String getRootDirectory() {
-        String directory = System.getProperty("root_directory");
+        String directory = System.getProperty("resource_directory");
         if (directory == null) {
             directory = Config.class.getResource("/resources").getPath();
         }

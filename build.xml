@@ -20,14 +20,16 @@
         </jar>
     </target>
 
-    <target name="run">
-      <antcall target="jar" />
-      <java jar="build/jar/Tiana.jar" fork="true"/>
-    </target>
-
     <target name="jar">
       <antcall target="clean" />
       <antcall target="compile" />
       <antcall target="build_jar" />
+    </target>
+
+    <target name="run">
+      <antcall target="jar" />
+      <java jar="build/jar/Tiana.jar" fork="true">
+        <sysproperty key="resource_directory" value="build/classes/resources" />
+      </java>
     </target>
 </project>
